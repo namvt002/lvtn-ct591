@@ -66,6 +66,7 @@ require("./routes/theloai")(app);
 require("./routes/ngonngu")(app);
 require("./routes/book")(app);
 require("./routes/khoahoc")(app);
+require("./routes/baihoc")(app);
 require("./routes/phieunhap")(app);
 require("./routes/khuyenmai")(app);
 require("./routes/diachi")(app);

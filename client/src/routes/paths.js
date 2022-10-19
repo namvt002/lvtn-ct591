@@ -78,6 +78,13 @@ export const PATH_DASHBOARD = {
         root: path(ROOTS_DASHBOARD, '/khoahoc'),
         new: path(ROOTS_DASHBOARD, '/khoahoc/new'),
     },
+    baihoc: {
+        root: path(ROOTS_DASHBOARD, '/baihoc'),
+    },
+    noidungbaihoc: {
+        root: path(ROOTS_DASHBOARD, '/noidungbaihoc'),
+        new: path(ROOTS_DASHBOARD, '/noidungbaihoc/new'),
+    },
     phieunhap: {
         root: path(ROOTS_DASHBOARD, '/phieunhap'),
         new: path(ROOTS_DASHBOARD, '/phieunhap/new'),

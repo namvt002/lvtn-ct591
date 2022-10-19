@@ -4,13 +4,10 @@ import plusFill from '@iconify/icons-eva/plus-fill';
 import {Link as RouterLink} from 'react-router-dom';
 // material
 import {
-    Avatar,
     Button,
     Card,
     Checkbox,
     Container,
-    Stack,
-    Switch,
     Table,
     TableBody,
     TableCell,
@@ -28,28 +25,29 @@ import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
 import SearchNotFound from '../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import {useSnackbar} from 'notistack5';
-import closeFill from '@iconify/icons-eva/close-fill';
-import {getData, postData} from "../../_helper/httpProvider";
-import {API_BASE_URL, URL_PUBLIC_IMAGES} from "../../config/configUrl";
-import {MIconButton} from "../../components/@material-extend";
-import KhoaHocListToolbar from "../../components/_dashboard/khoahoc/list/KhoaHocListToolbar";
-import KhoaHocListHead from "../../components/_dashboard/khoahoc/list/KhoaHocListHead";
-import KhoaHocMoreMenu from "../../components/_dashboard/khoahoc/list/KhoaHocMoreMenu";
-
+import {getData} from '../../_helper/httpProvider';
+import {API_BASE_URL} from '../../config/configUrl';
+import NoiDungBaiHocListHead from '../../components/_dashboard/noidungbaihoc/list/NoiDungBaiHocListHead';
+import NoiDungBaiHocToolbar from '../../components/_dashboard/noidungbaihoc/list/NoiDungBaiHocToolbar';
+import {fCurrency} from '../../_helper/formatCurrentCy';
+import {formatDateTime} from '../../_helper/formatDate';
+import NoiDungBaiHocMoreMenu from '../../components/_dashboard/noidungbaihoc/list/NoiDungBaiHocMoreMenu';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    {id: 'kh_makh', label: 'Mã khoá học', alignRight: false},
-    {id: 'kh_ten', label: 'Tên khóa học', alignRight: false},
-    {id: 'status', label: 'Trạng thái', alignRight: false},
+    {id: 'pn_id', label: 'Mã Phiếu Nhập', alignRight: false},
+    {id: 'pn_idnv', label: 'Mã Nhân Viên', alignRight: false},
+    {id: 'pn_tennv', label: 'Tên Nhân Viên', alignRight: false},
+    {id: 'pn_ncc', label: 'Nhà Cung Cấp', alignRight: false},
+    {id: 'pn_tongtien', label: 'Tổng Tiền', alignRight: false},
+    {id: 'pn_ngaynhap', label: 'Ngày Nhập', alignRight: false},
     {id: ''},
 ];
 
 // ----------------------------------------------------------------------
 
-export default function KhoaHocList() {
+export default function NoiDungBaiHocList() {
     const {themeStretch} = useSettings();
     const [page, setPage] = useState(0);
     const [order, setOrder] = useState('asc');
@@ -59,12 +57,13 @@ export default function KhoaHocList() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [_datas, setDatas] = useState([]);
     const [load, setLoad] = useState(0);
-    const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     useEffect(() => {
         (async () => {
             try {
-                const res = await getData(API_BASE_URL + `/khoahocs?search=${filterName}`);
+                const res = await getData(
+                    API_BASE_URL + `/phieunhap?search=${filterName}`,
+                );
                 setDatas(res.data);
             } catch (e) {
                 console.log(e);
@@ -76,15 +75,6 @@ export default function KhoaHocList() {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
-
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = _datas.map((n) => n.kh_id);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
     };
 
     const handleClick = (event, name) => {
@@ -105,6 +95,14 @@ export default function KhoaHocList() {
         setSelected(newSelected);
     };
 
+    const handleSelectAllClick = (event) => {
+        if (event.target.checked) {
+            const newSelecteds = _datas.map((n) => n.pn_id);
+            setSelected(newSelecteds);
+            return;
+        }
+        setSelected([]);
+    };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -121,51 +119,32 @@ export default function KhoaHocList() {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - _datas.length) : 0;
 
-    const isBooksNotFound = _datas.length === 0;
+    const isUserNotFound = _datas.length === 0;
 
-    const changeActiveBook = async (id, active) => {
-        try {
-            const res = await postData(API_BASE_URL + '/user/active', {
-                id: id,
-                active: active,
-            });
-            setLoad((e) => e + 1);
-            enqueueSnackbar(res.data, {
-                variant: 'success',
-                action: (key) => (
-                    <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                        <Icon icon={closeFill}/>
-                    </MIconButton>
-                ),
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
     return (
-        <Page title="KhoaHoc: List | Learn Code">
+        <Page title="Nội dung bài học | Learn Code">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <HeaderBreadcrumbs
-                    heading="Khóa học"
+                    heading="Nội dung bài học"
                     links={[
                         {name: 'Quản lý', href: PATH_DASHBOARD.root},
-                        {name: 'Khóa học', href: PATH_DASHBOARD.khoahoc.root},
-                        {name: 'Danh sách'},
+                        {name: 'Nôi dung bài học', href: PATH_DASHBOARD.noidungbaihoc.root},
+                        {name: 'Nội dung'},
                     ]}
                     action={
                         <Button
                             variant="contained"
                             component={RouterLink}
-                            to={PATH_DASHBOARD.khoahoc.new}
+                            to={PATH_DASHBOARD.noidungbaihoc.new}
                             startIcon={<Icon icon={plusFill}/>}
                         >
-                            Thêm khóa học
+                            Nội dung bài học mới
                         </Button>
                     }
                 />
 
                 <Card>
-                    <KhoaHocListToolbar
+                    <NoiDungBaiHocToolbar
                         selected={selected}
                         filterName={filterName}
                         onFilterName={handleFilterByName}
@@ -175,7 +154,7 @@ export default function KhoaHocList() {
                     <Scrollbar>
                         <TableContainer sx={{minWidth: 800}}>
                             <Table>
-                                <KhoaHocListHead
+                                <NoiDungBaiHocListHead
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
@@ -189,17 +168,18 @@ export default function KhoaHocList() {
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
-                                                kh_id,
-                                                kh_makh,
-                                                kh_ten,
-                                                kh_hinhanh,
-                                                active
+                                                pn_id,
+                                                pn_idnv,
+                                                fullname,
+                                                ncc_ten,
+                                                pn_tongtien,
+                                                pn_ngaylapphieu,
                                             } = row;
-                                            const isItemSelected = selected.indexOf(kh_id) !== -1;
+                                            const isItemSelected = selected.indexOf(pn_id) !== -1;
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={kh_id}
+                                                    key={pn_id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -208,49 +188,33 @@ export default function KhoaHocList() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={isItemSelected}
-                                                            onChange={(event) => handleClick(event, kh_id)}
+                                                            onChange={(event) =>
+                                                                handleClick(event, pn_id)
+                                                            }
                                                         />
                                                     </TableCell>
-                                                    <TableCell component="th" scope="row" padding="none">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Typography variant="subtitle2" noWrap>
-                                                                {kh_makh}
-                                                            </Typography>
-                                                        </Stack>
+                                                    <TableCell
+                                                        align="center"
+                                                        component="th"
+                                                        scope="row"
+                                                        padding="none"
+                                                    >
+                                                        <Typography variant="subtitle2" noWrap>
+                                                            {pn_id}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell align="center">{pn_idnv}</TableCell>
+                                                    <TableCell align="left">{fullname}</TableCell>
+                                                    <TableCell align="left">{ncc_ten}</TableCell>
+                                                    <TableCell align="left" sx={{width: '8rem'}}>
+                                                        {fCurrency(pn_tongtien)}
                                                     </TableCell>
                                                     <TableCell align="left">
-                                                        <Stack
-                                                            direction="row"
-                                                            alignItems="center"
-                                                            spacing={2}
-                                                        >
-                                                            <Avatar
-                                                                variant="square"
-                                                                alt={kh_makh}
-                                                                sx={{mr: 1}}
-                                                                src={`${
-                                                                    URL_PUBLIC_IMAGES + kh_hinhanh[kh_hinhanh.length - 1]?.akh_hinh
-                                                                }`}
-                                                            />
-                                                            {kh_ten}
-                                                        </Stack>
-                                                    </TableCell>
-                                        
-                                                    <TableCell align="left">
-                                                        <Switch
-                                                            checked={active === 1}
-                                                            onChange={() => {
-                                                                changeActiveBook(kh_id, !active);
-                                                            }}
-                                                        />
+                                                        {formatDateTime(pn_ngaylapphieu)}
                                                     </TableCell>
 
                                                     <TableCell align="right">
-                                                        <KhoaHocMoreMenu id={kh_id}/>
+                                                        <NoiDungBaiHocMoreMenu id={pn_id}/>
                                                     </TableCell>
                                                 </TableRow>
                                             );
@@ -261,7 +225,7 @@ export default function KhoaHocList() {
                                         </TableRow>
                                     )}
                                 </TableBody>
-                                {isBooksNotFound && (
+                                {isUserNotFound && (
                                     <TableBody>
                                         <TableRow>
                                             <TableCell align="center" colSpan={6} sx={{py: 3}}>

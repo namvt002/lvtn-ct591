@@ -40,14 +40,19 @@ const sidebarConfig = [
                 icon: ICONS.role,
             },
             {
-                title: 'Sách',
-                path: PATH_DASHBOARD.book.root,
-                icon: ICONS.book,
-            },
-            {
                 title: 'Khóa học',
                 path: PATH_DASHBOARD.khoahoc.root,
                 icon: ICONS.book,
+            },
+            {
+                title: 'Bài học',
+                path: PATH_DASHBOARD.baihoc.root,
+                icon: ICONS.danhmuc,
+            },
+            {
+                title: 'Nội dung bài học',
+                path: PATH_DASHBOARD.noidungbaihoc.root,
+                icon: ICONS.phieunhap,
             },
             {
                 title: 'Nhập hàng',

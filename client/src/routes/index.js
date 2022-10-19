@@ -110,6 +110,36 @@ export default function Router() {
                     ],
                 },
                 {
+                    path: 'baihoc',
+                    children: [
+                        {
+                            path: '',
+                            element: <BaiHocList />,
+                        },
+                    ],
+                },
+                {
+                    path: 'noidungbaihoc',
+                    children: [
+                        {
+                            path: '',
+                            element: <NoiDungBaiHocList/>,
+                        },
+                        {
+                            path: 'new',
+                            element: <NoiDungBaiHocCreate/>,
+                        },
+                        {
+                            path: ':id/edit',
+                            element: <NoiDungBaiHocCreate/>,
+                        },
+                        {
+                            path: ':id/detail',
+                            element: <NoiDungBaiHocDetail/>,
+                        },
+                    ],
+                },
+                {
                     path: 'phieunhap',
                     children: [
                         {
@@ -316,6 +346,8 @@ const DanhMucList = Loadable(lazy(() => import('../pages/dashboard/DanhMuc')));
 const TacGiaList = Loadable(lazy(() => import('../pages/dashboard/TacGia')));
 //--------------------------Thể loại-------------------------------------------
 const TheLoaiList = Loadable(lazy(() => import('../pages/dashboard/TheLoai')));
+//--------------------------BaiHoc-------------------------------------------
+const BaiHocList = Loadable(lazy(() => import('../pages/dashboard/BaiHoc')));
 //--------------------------Ngôn ngữ-------------------------------------------
 const NgonNguList = Loadable(lazy(() => import('../pages/dashboard/NgonNgu')));
 //--------------------------Sách-------------------------------------------
@@ -345,6 +377,20 @@ const PhieuNhapCreate = Loadable(
 
 const PhieuNhapDetail = Loadable(
     lazy(() => import('../pages/dashboard/PhieuNhapDetail')),
+);
+
+//--------------------------Nội dung bài học-------------------------------------------
+
+const NoiDungBaiHocList = Loadable(
+    lazy(() => import('../pages/dashboard/NoiDungBaiHoc')),
+);
+
+const NoiDungBaiHocCreate = Loadable(
+    lazy(() => import('../pages/dashboard/NoiDungBaiHocCreate')),
+);
+
+const NoiDungBaiHocDetail = Loadable(
+    lazy(() => import('../pages/dashboard/NoiDungBaiHocDetail')),
 );
 
 //----------------d-----------------Giam gia--------------------------------------
