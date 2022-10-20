@@ -119,6 +119,15 @@ export default function Router() {
                     ],
                 },
                 {
+                    path: 'baikiemtra',
+                    children: [
+                        {
+                            path: '',
+                            element: <BaiKiemTraList />,
+                        },
+                    ],
+                },
+                {
                     path: 'noidungbaihoc',
                     children: [
                         {
@@ -348,6 +357,8 @@ const TacGiaList = Loadable(lazy(() => import('../pages/dashboard/TacGia')));
 const TheLoaiList = Loadable(lazy(() => import('../pages/dashboard/TheLoai')));
 //--------------------------BaiHoc-------------------------------------------
 const BaiHocList = Loadable(lazy(() => import('../pages/dashboard/BaiHoc')));
+//--------------------------Bai kiem tra-------------------------------------------
+const BaiKiemTraList = Loadable(lazy(() => import('../pages/dashboard/BaiKiemTra')));
 //--------------------------Ngôn ngữ-------------------------------------------
 const NgonNguList = Loadable(lazy(() => import('../pages/dashboard/NgonNgu')));
 //--------------------------Sách-------------------------------------------

@@ -55,6 +55,11 @@ const sidebarConfig = [
                 icon: ICONS.phieunhap,
             },
             {
+                title: 'Bài kiểm tra',
+                path: PATH_DASHBOARD.baikiemtra.root,
+                icon: ICONS.tacgia,
+            },
+            {
                 title: 'Nhập hàng',
                 path: PATH_DASHBOARD.phieunhap.root,
                 icon: ICONS.phieunhap,

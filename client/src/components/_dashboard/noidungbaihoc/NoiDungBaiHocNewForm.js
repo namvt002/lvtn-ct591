@@ -27,6 +27,17 @@ import closeFill from '@iconify/icons-eva/close-fill';
 import {getData, postData, putData} from "../../../_helper/httpProvider";
 import {API_BASE_URL} from "../../../config/configUrl";
 import {fCurrency} from "../../../_helper/formatCurrentCy";
+import {styled} from '@material-ui/core/styles';
+import {QuillEditor} from '../../editor';
+
+//----------------code editor
+import Editor from "@monaco-editor/react";
+
+const LabelStyle = styled(Typography)(({theme}) => ({
+    ...theme.typography.subtitle2,
+    color: theme.palette.text.secondary,
+    marginBottom: theme.spacing(1),
+}));
 
 // ----------------------------------------------------------------------
 NoiDungBaiHocNewForm.propTypes = {
@@ -172,20 +183,11 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
         <FormikProvider value={formik}>
             <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={6}>
                         <Card sx={{p: 3}}>
                             <Stack spacing={3}>
                                 <Grid container spacing={{xs: 3, sm: 2}}>
-                                    <Grid item xs={12} md={4}>
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            label="Nhân viên"
-                                            {...getFieldProps('fullname')}
-                                            disabled
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} md={8}>
+                                    <Grid item xs={12} md={12}>
                                         <Autocomplete
                                             freeSolo
                                             value={values.pn_idncc}
@@ -198,7 +200,7 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                             }))}
                                             renderInput={(params) => (
                                                 <TextField
-                                                    label="Nhà cung cấp"
+                                                    label="Chọn bài học"
                                                     {...params}
                                                     error={Boolean(touched.pn_idncc && errors.pn_idncc)}
                                                     helperText={touched.pn_idncc && errors.pn_idncc}
@@ -208,65 +210,56 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                         />
                                     </Grid>
                                 </Grid>
+                                <div>
+                                    <LabelStyle>Mô tả</LabelStyle>
+                                    <QuillEditor
+                                        simple
+                                        id="product-description"
+                                        value={values.sp_mota}
+                                        placeholder="Mô tả ..."
+                                        onChange={(val) => setFieldValue('sp_mota', val)}
+                                    />
+                                </div>
+                            </Stack>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Card sx={{p: 3}}>
+                            <Stack spacing={3}>
                                 <Grid container spacing={{xs: 3, sm: 2}}>
-                                    <Grid item xs={12} md={6}>
-                                        <Autocomplete
-                                            freeSolo
-                                            value={values.ctpn_idsp}
-                                            onChange={(event, newValue) => {
-                                                setFieldValue('ctpn_idsp', newValue || '');
-                                            }}
-                                            options={books?.map((option) => ({
-                                                sp_id: option.sp_id,
-                                                sp_ten: option.sp_ten,
-                                                sp_masp: option.sp_masp,
-                                            }))}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    label="Sách"
-                                                    {...params}
-                                                    error={Boolean(touched.ctpn_idsp && errors.ctpn_idsp)}
-                                                    helperText={touched.ctpn_idsp && errors.ctpn_idsp}
-                                                />
-                                            )}
-                                            getOptionLabel={(option) =>
-                                                option.sp_masp
-                                                    ? `${option.sp_masp} - ${option.sp_ten}`
-                                                    : ''
-                                            }
+                                    <Grid item xs={12} md={12}>
+                                        <TextField
+                                            fullWidth
+                                            label="Tiêu đề bài học"
+                                            {...getFieldProps('sp_ten')}
+                                            error={Boolean(touched.sp_ten && errors.sp_ten)}
+                                            helperText={touched.sp_ten && errors.sp_ten}
                                         />
                                     </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Stack
-                                            direction={{xs: 'column', sm: 'row'}}
-                                            spacing={{xs: 3, sm: 2}}
-                                        >
-                                            <TextField
-                                                {...getFieldProps('ctpn_soluong')}
-                                                label="Số lượng"
-                                                error={Boolean(
-                                                    touched.ctpn_soluong && errors.ctpn_soluong,
-                                                )}
-                                                helperText={touched.ctpn_soluong && errors.ctpn_soluong}
+                                </Grid>
+                                <Grid container spacing={{xs: 3, sm: 2}}>
+                                    <Grid item xs={12} md={12}>
+                                        <div >
+                                            <LabelStyle>Code </LabelStyle>
+                                            <Editor
+                                                width="96%"
+                                                height="300px"
+                                                defaultLanguage="javascript"
+                                                defaultValue="// some comment"
+                                                theme='vs-dark'
+                                                // onMount={handleEditorDidMount}
                                             />
-                                            <TextField
-                                                {...getFieldProps('ctpn_gia')}
-                                                label="Giá"
-                                                error={Boolean(touched.ctpn_gia && errors.ctpn_gia)}
-                                                helperText={touched.ctpn_gia && errors.ctpn_gia}
-                                            />
-                                            {/* dau cong */}
-                                            <IconButton type="submit">
-                                                <Icon icon="akar-icons:circle-plus"/>
-                                            </IconButton>
-                                        </Stack>
+                                        </div>
                                     </Grid>
                                 </Grid>
 
                                 <Box
                                     sx={{mt: 3, display: 'flex', justifyContent: 'flex-end'}}
                                 >
+                                    {/* dau cong */}
+                                     <IconButton type="submit">
+                                                <Icon icon="akar-icons:circle-plus"/>
+                                            </IconButton>
                                     <LoadingButton
                                         type="button"
                                         variant="contained"
