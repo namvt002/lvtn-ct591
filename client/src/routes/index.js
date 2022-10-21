@@ -149,6 +149,27 @@ export default function Router() {
                     ],
                 },
                 {
+                    path: 'cauhoi',
+                    children: [
+                        {
+                            path: '',
+                            element: <CauHoiList/>,
+                        },
+                        {
+                            path: 'new',
+                            element: <CauHoiCreate/>,
+                        },
+                        {
+                            path: ':id/edit',
+                            element: <CauHoiCreate/>,
+                        },
+                        {
+                            path: ':id/detail',
+                            element: <CauHoiDetail/>,
+                        },
+                    ],
+                },
+                {
                     path: 'phieunhap',
                     children: [
                         {
@@ -388,6 +409,20 @@ const PhieuNhapCreate = Loadable(
 
 const PhieuNhapDetail = Loadable(
     lazy(() => import('../pages/dashboard/PhieuNhapDetail')),
+);
+
+//--------------------------Câu hỏi-------------------------------------------
+
+const CauHoiList = Loadable(
+    lazy(() => import('../pages/dashboard/CauHoi')),
+);
+
+const CauHoiCreate = Loadable(
+    lazy(() => import('../pages/dashboard/CauHoiCreate')),
+);
+
+const CauHoiDetail = Loadable(
+    lazy(() => import('../pages/dashboard/CauHoiDetail')),
 );
 
 //--------------------------Nội dung bài học-------------------------------------------
