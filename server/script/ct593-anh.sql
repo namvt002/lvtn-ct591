@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 14, 2022 at 05:38 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 7.4.29
+-- Generation Time: Oct 23, 2022 at 10:53 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,24 +21,67 @@ SET time_zone = "+00:00";
 -- Database: `ct593`
 --
 
-DELIMITER $$
---
--- Functions
---
-CREATE DEFINER=`root`@`localhost` FUNCTION `FC_PRODUCT` (`id` INT) RETURNS FLOAT  BEGIN
-    DECLARE price float;
-    DECLARE date_min DATETIME;
-    
-    SELECT MIN(pn.pn_ngaylapphieu) INTO date_min
-    FROM chi_tiet_phieu_nhap ctpn 
-    	LEFT JOIN phieu_nhap pn ON pn.pn_id = ctpn.ctpn_idpn
-    WHERE ctpn.ctpn_idsp = id AND ctpn.ctpn_soluong > 0;
-    
+-- --------------------------------------------------------
 
-    RETURN price;
-END$$
+--
+-- Table structure for table `anh_khoa_hoc`
+--
 
-DELIMITER ;
+CREATE TABLE `anh_khoa_hoc` (
+  `akh_id` int(11) NOT NULL,
+  `akh_hinh` varchar(300) NOT NULL,
+  `akh_idkh` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `anh_khoa_hoc`
+--
+
+INSERT INTO `anh_khoa_hoc` (`akh_id`, `akh_hinh`, `akh_idkh`) VALUES
+(1, 'kh_hinhanh-1666104270196.png', 1),
+(2, 'kh_hinhanh-1666143478796.png', 2),
+(3, 'kh_hinhanh-1666143748971.png', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bai_hoc`
+--
+
+CREATE TABLE `bai_hoc` (
+  `bh_id` int(11) NOT NULL,
+  `bh_ten` varchar(300) NOT NULL,
+  `bh_idkh` int(11) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `bai_hoc`
+--
+
+INSERT INTO `bai_hoc` (`bh_id`, `bh_ten`, `bh_idkh`, `active`) VALUES
+(1, '1. Bạn sẽ làm được gì sau khóa học này?', 1, 1),
+(2, '2. Tìm hiểu về HTML, CSS', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bai_kiem_tra`
+--
+
+CREATE TABLE `bai_kiem_tra` (
+  `bkt_id` int(11) NOT NULL,
+  `bkt_ten` varchar(300) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT 1,
+  `bkt_idkh` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `bai_kiem_tra`
+--
+
+INSERT INTO `bai_kiem_tra` (`bkt_id`, `bkt_ten`, `active`, `bkt_idkh`) VALUES
+(1, 'Bài kiểm tra cấp chứng chỉ khóa học html, css', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -54,6 +97,18 @@ CREATE TABLE `binh_luan` (
   `bl_trangthai` int(11) DEFAULT NULL,
   `kh_id` int(11) NOT NULL,
   `sp_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cau_hoi`
+--
+
+CREATE TABLE `cau_hoi` (
+  `ch_id` int(11) NOT NULL,
+  `ch_noidung` varchar(500) NOT NULL,
+  `ch_idbkt` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -418,6 +473,19 @@ INSERT INTO `danh_muc` (`dm_id`, `dm_ten`, `active`) VALUES
 (8, 'Sách Mới', 1),
 (9, 'Sách Bán Chạy', 1),
 (11, 'Sách Học Ngoại Ngữ', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dap_an`
+--
+
+CREATE TABLE `dap_an` (
+  `da_id` int(11) NOT NULL,
+  `da_noidung` varchar(500) NOT NULL,
+  `da_correct` tinyint(4) NOT NULL DEFAULT 0,
+  `da_idch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1187,6 +1255,29 @@ CREATE TABLE `khach_hang` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `khoa_hoc`
+--
+
+CREATE TABLE `khoa_hoc` (
+  `kh_id` int(11) NOT NULL,
+  `kh_makh` varchar(20) NOT NULL,
+  `kh_ten` varchar(300) NOT NULL,
+  `kh_mota` text NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `khoa_hoc`
+--
+
+INSERT INTO `khoa_hoc` (`kh_id`, `kh_makh`, `kh_ten`, `kh_mota`, `active`) VALUES
+(1, 'khhtmlcb', 'Khóa học html cơ bản', '<p>Khóa học html dành cho người mới bắt đầu</p>', 1),
+(2, 'khjavascriptcanban', 'Khóa học javascript căn bản', '<p>Khóa học dành cho các bạn chưa biết gì về javascript căn bản</p>', 1),
+(3, 'javascriptnangcao', 'Khóa học JavaScript năng cao', '<p>Khóa học JavaScript năng cao</p>', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `khuyen_mai`
 --
 
@@ -1439,9 +1530,7 @@ CREATE TABLE `quyen` (
 
 INSERT INTO `quyen` (`q_id`, `q_ten`, `q_vaitro`, `q_mota`, `active`) VALUES
 (1, 'USER', 'Người dùng', '', 1),
-(2, 'ADMIN', 'Người quản lý', NULL, 1),
-(3, 'EMPLOYEE', 'Nhân viên', NULL, 1),
-(4, 'SHIPPER', 'Người giao hàng', NULL, 1);
+(2, 'ADMIN', 'Người quản lý', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -2159,14 +2248,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_id`, `email`, `fullname`, `credential`, `phone`, `gender`, `birthday`, `role_id`, `verify`, `active`) VALUES
-(111, '114872046152355360109', 'nvnhan.dev@gmail.com', 'Nguyễn Văn Nhẫn', '$2a$08$cv9v90NIsYoszCJq7XsXU.V/j/doSbvgN9icLsqH98OCeakWcBMoa', '0794351150', 'male', '2000-01-01', 2, 1, 1),
-(115, NULL, 'nvnhan.dev3@gmail.com', 'Nguyễn Văn Nhẫn A', '$2a$08$pDdIGVk23.bL3wt2SQ6CFebNZdhjBU7p1MT/bDYrhzacfWGoGPtIu', '0794351159', 'male', '2000-01-10', 1, 1, 1),
+(111, '114872046152355360109', 'viettrung0601@gmail.com', 'Trần Việt Trung', '$2a$08$nP0zspLNwgIFWJD2eUqurOMWJPoGu.EqhGc3ijCbib3MaghEKmeSG', '0794351150', 'male', '2000-01-03', 2, 1, 1),
+(115, NULL, 'nvnhan.dev3@gmail.com', 'Nguyễn Văn Nhẫn A', '$2a$08$nP0zspLNwgIFWJD2eUqurOMWJPoGu.EqhGc3ijCbib3MaghEKmeSG', '0794351159', 'male', '2000-01-10', 1, 1, 1),
 (117, NULL, 'nvnhan.dev5@gmail.com', 'nguyen van b', '$2a$08$3yCugmqCW0Qx7qW.GLEjY.UN.RsTMsv.H06gkyzmgjeA8hNAaYbL.', '0794351150', 'male', '2000-01-10', 1, 1, 1),
 (118, NULL, 'nvnhan.dev6@gmail.com', 'Nguyen van c', '$2a$08$YyRr.7Ia4kThVphmra.a2Oj1W.w8WJITB4Q1ye0mEX5Rz06unvcOu', '', 'male', '2000-01-10', 1, 1, 1),
 (119, NULL, 'nvnhan.dev7@gmail.com', 'nguyen van D', '$2a$08$L7/bmih9H43h9mSLGkA8NOCN3m.WyLoAnoPDF.vN8ZTBYtRhhFabK', '0794351150', 'male', '2000-01-10', 3, 1, 1),
-(122, NULL, 'nvnhan.dev4@gmail.com', 'Nguyen van nhan', '$2a$08$n0UPnRP7vC2J3Q9epZDDHOH3q8ZwWp4qkIbm0KnKkxFIi5ULEK01a', '0794351150', 'male', '2000-01-10', 3, 1, 1),
-(123, NULL, 'nvnhan.dev2@gmail.com', 'Nguyen van nhan', '$2a$08$H/rDkgf/CBS5I2aPI.l/revLt5WAgBaQtJj/0/Xtdb1646bTfMsL.', NULL, NULL, NULL, 1, 0, 1),
-(124, NULL, 'linhb1809253@student.ctu.edu.vn', 'Bùi Thi Diệu Linh', '$2a$08$LBbM9j7UvSG/LAaotx4WGuPi8njp3zI8S2FPaC4.afXxl8t74zJwK', '0835788522', 'female', '2000-03-19', 2, 1, 1);
+(122, NULL, 'nvnhan.dev4@gmail.com', 'Nguyen van nhan', '$2a$08$n0UPnRP7vC2J3Q9epZDDHOH3q8ZwWp4qkIbm0KnKkxFIi5ULEK01a', '0794351150', 'male', '2000-01-10', 3, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2187,10 +2274,34 @@ CREATE TABLE `van_chuyen` (
 --
 
 --
+-- Indexes for table `anh_khoa_hoc`
+--
+ALTER TABLE `anh_khoa_hoc`
+  ADD PRIMARY KEY (`akh_id`);
+
+--
+-- Indexes for table `bai_hoc`
+--
+ALTER TABLE `bai_hoc`
+  ADD PRIMARY KEY (`bh_id`);
+
+--
+-- Indexes for table `bai_kiem_tra`
+--
+ALTER TABLE `bai_kiem_tra`
+  ADD PRIMARY KEY (`bkt_id`);
+
+--
 -- Indexes for table `binh_luan`
 --
 ALTER TABLE `binh_luan`
   ADD PRIMARY KEY (`bl_id`);
+
+--
+-- Indexes for table `cau_hoi`
+--
+ALTER TABLE `cau_hoi`
+  ADD PRIMARY KEY (`ch_id`);
 
 --
 -- Indexes for table `chi_tiet_hoa_don`
@@ -2209,6 +2320,12 @@ ALTER TABLE `chi_tiet_phieu_nhap`
 --
 ALTER TABLE `danh_muc`
   ADD PRIMARY KEY (`dm_id`);
+
+--
+-- Indexes for table `dap_an`
+--
+ALTER TABLE `dap_an`
+  ADD PRIMARY KEY (`da_id`);
 
 --
 -- Indexes for table `dia_chi`
@@ -2232,6 +2349,12 @@ ALTER TABLE `hoa_don`
 -- Indexes for table `khach_hang`
 --
 ALTER TABLE `khach_hang`
+  ADD PRIMARY KEY (`kh_id`);
+
+--
+-- Indexes for table `khoa_hoc`
+--
+ALTER TABLE `khoa_hoc`
   ADD PRIMARY KEY (`kh_id`);
 
 --
@@ -2323,10 +2446,34 @@ ALTER TABLE `van_chuyen`
 --
 
 --
+-- AUTO_INCREMENT for table `anh_khoa_hoc`
+--
+ALTER TABLE `anh_khoa_hoc`
+  MODIFY `akh_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `bai_hoc`
+--
+ALTER TABLE `bai_hoc`
+  MODIFY `bh_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `bai_kiem_tra`
+--
+ALTER TABLE `bai_kiem_tra`
+  MODIFY `bkt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `binh_luan`
 --
 ALTER TABLE `binh_luan`
   MODIFY `bl_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `cau_hoi`
+--
+ALTER TABLE `cau_hoi`
+  MODIFY `ch_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `chi_tiet_hoa_don`
@@ -2345,6 +2492,12 @@ ALTER TABLE `chi_tiet_phieu_nhap`
 --
 ALTER TABLE `danh_muc`
   MODIFY `dm_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `dap_an`
+--
+ALTER TABLE `dap_an`
+  MODIFY `da_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `dia_chi`
@@ -2369,6 +2522,12 @@ ALTER TABLE `hoa_don`
 --
 ALTER TABLE `khach_hang`
   MODIFY `kh_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `khoa_hoc`
+--
+ALTER TABLE `khoa_hoc`
+  MODIFY `kh_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `khuyen_mai`
@@ -2446,7 +2605,7 @@ ALTER TABLE `trang_thai`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT for table `van_chuyen`

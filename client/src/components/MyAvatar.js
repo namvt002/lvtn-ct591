@@ -11,7 +11,7 @@ export default function MyAvatar({...other}) {
 
     return (
         <MAvatar
-            src={user?.photoURL || 'https://cdn.quasar.dev/img/avatar4.jpg'}
+            src={user?.photoURL}
             alt={user?.fullname}
             color={user?.photoURL ? 'default' : createAvatar(user.fullname).color}
             {...other}
