@@ -29,19 +29,14 @@ import {getData} from '../../_helper/httpProvider';
 import {API_BASE_URL} from '../../config/configUrl';
 import CauHoiListHead from '../../components/_dashboard/cauhoi/list/CauHoiListHead';
 import CauHoiToolbar from '../../components/_dashboard/cauhoi/list/CauHoiToolbar';
-import {fCurrency} from '../../_helper/formatCurrentCy';
-import {formatDateTime} from '../../_helper/formatDate';
 import CauHoiMoreMenu from '../../components/_dashboard/cauhoi/list/CauHoiMoreMenu';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    {id: 'pn_id', label: 'Mã Phiếu Nhập', alignRight: false},
-    {id: 'pn_idnv', label: 'Mã Nhân Viên', alignRight: false},
-    {id: 'pn_tennv', label: 'Tên Nhân Viên', alignRight: false},
-    {id: 'pn_ncc', label: 'Nhà Cung Cấp', alignRight: false},
-    {id: 'pn_tongtien', label: 'Tổng Tiền', alignRight: false},
-    {id: 'pn_ngaynhap', label: 'Ngày Nhập', alignRight: false},
+    {id: 'pn_id', label: 'Mã câu hỏi', alignRight: false},
+    {id: 'pn_idnv', label: 'Tên khóa học', alignRight: false},
+    {id: 'pn_tennv', label: 'Tên bài kiểm tra', alignRight: false},
     {id: ''},
 ];
 
@@ -62,7 +57,7 @@ export default function BookList() {
         (async () => {
             try {
                 const res = await getData(
-                    API_BASE_URL + `/phieunhap?search=${filterName}`,
+                    API_BASE_URL + `/cauhois?search=${filterName}`,
                 );
                 setDatas(res.data);
             } catch (e) {
@@ -168,18 +163,17 @@ export default function BookList() {
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
-                                                pn_id,
-                                                pn_idnv,
-                                                fullname,
-                                                ncc_ten,
-                                                pn_tongtien,
-                                                pn_ngaylapphieu,
+                                                ch_id,
+                                                ch_noidung,
+                                                kh_ten,
+                                                bkt_ten,
+                                                bkt_id
                                             } = row;
-                                            const isItemSelected = selected.indexOf(pn_id) !== -1;
+                                            const isItemSelected = selected.indexOf(bkt_id) !== -1;
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={pn_id}
+                                                    key={bkt_id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -189,7 +183,7 @@ export default function BookList() {
                                                         <Checkbox
                                                             checked={isItemSelected}
                                                             onChange={(event) =>
-                                                                handleClick(event, pn_id)
+                                                                handleClick(event, bkt_id)
                                                             }
                                                         />
                                                     </TableCell>
@@ -200,21 +194,13 @@ export default function BookList() {
                                                         padding="none"
                                                     >
                                                         <Typography variant="subtitle2" noWrap>
-                                                            {pn_id}
+                                                            {bkt_id}
                                                         </Typography>
                                                     </TableCell>
-                                                    <TableCell align="center">{pn_idnv}</TableCell>
-                                                    <TableCell align="left">{fullname}</TableCell>
-                                                    <TableCell align="left">{ncc_ten}</TableCell>
-                                                    <TableCell align="left" sx={{width: '8rem'}}>
-                                                        {fCurrency(pn_tongtien)}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {formatDateTime(pn_ngaylapphieu)}
-                                                    </TableCell>
-
+                                                    <TableCell align="left">{kh_ten}</TableCell>
+                                                    <TableCell align="left">{bkt_ten}</TableCell>
                                                     <TableCell align="right">
-                                                        <CauHoiMoreMenu id={pn_id}/>
+                                                        <CauHoiMoreMenu id={bkt_id} cauHoiDetail={row} />
                                                     </TableCell>
                                                 </TableRow>
                                             );

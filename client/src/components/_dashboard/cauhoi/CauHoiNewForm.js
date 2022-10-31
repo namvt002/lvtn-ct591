@@ -11,13 +11,11 @@ import {
   Grid,
   IconButton,
   Stack,
-  Table,
-  TableCell,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
   Checkbox,
+  FormControlLabel,
+  Divider,
 } from '@material-ui/core';
 //
 import { useEffect, useState } from 'react';
@@ -27,7 +25,6 @@ import { MIconButton } from '../../@material-extend';
 import closeFill from '@iconify/icons-eva/close-fill';
 import { getData, postData, putData } from '../../../_helper/httpProvider';
 import { API_BASE_URL } from '../../../config/configUrl';
-import { fCurrency } from '../../../_helper/formatCurrentCy';
 
 // ----------------------------------------------------------------------
 CauHoiNewForm.propTypes = {
@@ -39,86 +36,53 @@ CauHoiNewForm.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function CauHoiNewForm({ isEdit, current, id, user }) {
+  console.log('aaaaaaaaaaaa', current);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [books, setBooks] = useState([]);
   const [baikiemtra, setBaiKiemTra] = useState([]);
-  const [listBooks, setListBooks] = useState([]);
+  const [dapAn, setDapan] = useState(
+    current.cauhoi
+      ? current?.cauhoi.map((e) => ({
+          cauhoi: e.ch_noidung,
+          dapan: e.ch_dapan,
+          correct: e.ch_dapandung,
+        }))
+      : [],
+  );
 
   useEffect(() => {
     (async () => {
-      const _books = await getData(API_BASE_URL + '/books');
-      setBooks(_books.data);
-      const _bkt = await getData(API_BASE_URL + '/baikiemtras');
-      setBaiKiemTra(_bkt.data);
-      console.log(_bkt.data, 'BKT');
-      if (isEdit && current.length > 0) {
-        current.map((b) => {
-          return setListBooks((preState) => [
-            ...preState,
-            {
-              ctpn_masp: b.sp_masp,
-              ctpn_idsp: b.ctpn_idsp,
-              ctpn_tensp: b.sp_ten,
-              ctpn_gia: b.ctpn_gia,
-              ctpn_soluong: b.ctpn_soluong,
-            },
-          ]);
-        });
-      }
+      const _baiKiemTra = await getData(API_BASE_URL + '/baikiemtras');
+      setBaiKiemTra(_baiKiemTra.data);
     })();
   }, [isEdit, current]);
 
   const NewPhieuNhapSchema = Yup.object().shape({
-    fullname: Yup.string().required('Vui lòng nhập họ tên'),
-    pn_idncc: Yup.object().required('Vui lòng chọn nhà cung cấp'),
-    ctpn_idsp: Yup.object().required('Vui lòng chọn sách'),
-    ctpn_soluong: Yup.number()
-      .min(1, 'Số lượng không hợp lệ')
-      .positive('Số lượng không hợp lệ')
-      .integer('Số lượng không hợp lệ')
-      .required('Vui lòng nhập số lượng'),
-    ctpn_gia: Yup.number()
-      .min(1, 'Giá không hợp lệ')
-      .required('Vui lòng nhập giá'),
+    ch_idbkt: Yup.object().required('Vui lòng chọn bài kiểm tra'),
+    ch_noidung: Yup.string().required('Vui nhập nội dung câu hỏi'),
+    ch_dapan: Yup.string().required('Vui nhập nội dung đáp án'),
   });
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      ch_dapan: '',
+      ch_dapandung: false,
       ch_noidung: current?.ch_noidung || '',
-      ch_idbkt: current[0]?.bkt_id
+      ch_idbkt: current?.bkt_id
         ? {
-            bkt_id: current[0]?.bkt_id,
-            bkt_ten: current[0]?.bkt_ten,
+            bkt_id: current?.bkt_id,
+            bkt_ten: current?.bkt_ten,
           }
         : '',
     },
     validationSchema: NewPhieuNhapSchema,
     onSubmit: async (values, { setFieldValue }) => {
-      let check = false;
-      // eslint-disable-next-line array-callback-return
-      listBooks.map((b) => {
-        if (b.ctpn_masp === values.ctpn_idsp.sp_masp) check = true;
-      });
-      if (check) {
-        enqueueSnackbar('Sách đã có trong phiếu nhập!', {
-          variant: 'error',
-          action: (key) => (
-            <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-              <Icon icon={closeFill} />
-            </MIconButton>
-          ),
-        });
-        return;
-      }
-      setListBooks((preState) => [
-        ...preState,
+      setDapan((pre) => [
+        ...pre,
         {
-          ctpn_masp: values.ctpn_idsp.sp_masp,
-          ctpn_idsp: values.ctpn_idsp.sp_id,
-          ctpn_tensp: values.ctpn_idsp.sp_ten,
-          ctpn_gia: values.ctpn_gia,
-          ctpn_soluong: values.ctpn_soluong,
+          cauhoi: values.ch_noidung,
+          dapan: values.ch_dapan,
+          correct: values.ch_dapandung,
         },
       ]);
     },
@@ -131,9 +95,8 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
     values,
     setFieldValue,
   } = formik;
-  console.log(errors, values);
   const handleSubmitPN = async () => {
-    if (listBooks.length === 0) {
+    if (dapAn.length === 0) {
       enqueueSnackbar('Chưa có câu hỏi!', {
         variant: 'error',
         action: (key) => (
@@ -144,32 +107,31 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
       });
       return;
     }
+
+    console.log(values);
+
     let _values = {};
-    _values.pn_idncc = values.pn_idncc.ncc_id;
-    _values.pn_idnv = values.pn_idnv;
-    _values.pn_tongtien = listBooks.reduce(
-      (total, item) => item.ctpn_soluong * item.ctpn_gia + total,
-      0,
-    );
-    _values.sanpham = listBooks;
-    console.log(current);
+    _values.ch_idbkt = values.ch_idbkt.bkt_id;
+    _values.cauhoi = dapAn;
+
     try {
       if (isEdit) {
         await putData(
-          API_BASE_URL + '/phieunhap/' + current[0]?.pn_id,
+          API_BASE_URL + '/cauhoi',
           _values,
         );
       } else {
-        await postData(API_BASE_URL + '/phieunhap', _values);
-        setListBooks([]);
+        await postData(API_BASE_URL + '/cauhoi', _values);
+        setDapan([]);
       }
-      enqueueSnackbar(!isEdit ? 'Thêm thành công[' : 'Cập nhật thành công', {
+      enqueueSnackbar(!isEdit ? 'Thêm thành công' : 'Cập nhật thành công', {
         variant: 'success',
       });
     } catch (e) {
       console.log(e);
     }
   };
+
   return (
     <FormikProvider value={formik}>
       <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
@@ -204,13 +166,16 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
                     <TextField
                       fullWidth
                       label="Nội dung câu hỏi"
-                      {...getFieldProps('sp_masp')}
-                      error={Boolean(touched.sp_masp && errors.sp_masp)}
-                      helperText={touched.sp_masp && errors.sp_masp}
+                      value={values.ch_noidung}
+                      onChange={(e) => {
+                        setFieldValue('ch_noidung', e.target.value);
+                      }}
+                      error={Boolean(touched.ch_noidung && errors.ch_noidung)}
+                      helperText={touched.ch_noidung && errors.ch_noidung}
                     />
                   </Grid>
                 </Grid>
-                <Grid container >
+                <Grid container>
                   <Grid item xs={12} md={12}>
                     <Stack
                       direction={{ xs: 'column', sm: 'row' }}
@@ -219,21 +184,24 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
                       <TextField
                         fullWidth
                         label="Đán án câu hỏi"
-                        {...getFieldProps('sp_masp')}
-                        error={Boolean(touched.sp_masp && errors.sp_masp)}
-                        helperText={touched.sp_masp && errors.sp_masp}
-                        
+                        value={values.ch_dapan}
+                        onChange={(e) => {
+                          setFieldValue('ch_dapan', e.target.value);
+                        }}
+                        error={Boolean(touched.ch_dapan && errors.ch_dapan)}
+                        helperText={touched.ch_dapan && errors.ch_dapan}
                       />
-                      <Checkbox
-                        // disableRipple
-                        // checked={completed}
-                        // icon={<Icon icon={radioButtonOffOutline} />}
-                        // checkedIcon={<Icon icon={checkmarkCircle2Outline} />}
-                        // onChange={handleChangeComplete}
-                        // label="Đáp án đúng"
-                        
-                      /> <div style={{width: "150px",lineHeight: "55px"}}>Đáp án đúng</div>
 
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={values.ch_dapandung}
+                            {...getFieldProps('ch_dapandung')}
+                          />
+                        }
+                        label="Đáp án đúng"
+                        sx={{ width: '150px' }}
+                      ></FormControlLabel>
                       <IconButton type="submit">
                         <Icon icon="akar-icons:circle-plus" />
                       </IconButton>
@@ -257,62 +225,55 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
           </Grid>
           <Grid item xs={12} md={12}>
             <Card>
-              {listBooks.length > 0 && (
+              {dapAn.length > 0 && (
                 <Box padding={4}>
-                  <Typography variant="h4" align="center">
-                    Phiếu nhập
-                  </Typography>
-                  <Stack spacing={{ xs: 3, sm: 2 }} m={2}>
-                    <Typography>
-                      Nhân viên: <b>{values.fullname}</b>
+                  <Box p={4}>
+                    <Typography variant="h3" align="center">
+                      {values.ch_idbkt.bkt_ten}
                     </Typography>
-                    <Typography>
-                      Nhà cung cấp: <b>{values.pn_idncc?.ncc_ten}</b>
-                    </Typography>
-                    <Typography>
-                      Tổng tiền:{' '}
-                      <b>
-                        {fCurrency(
-                          listBooks.reduce(
-                            (total, item) =>
-                              item.ctpn_soluong * item.ctpn_gia + total,
-                            0,
-                          ),
-                        )}
-                      </b>
-                    </Typography>
-                  </Stack>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Mã sản phẩm</TableCell>
-                        <TableCell>Tên sản phẩm</TableCell>
-                        <TableCell>Số lượng</TableCell>
-                        <TableCell>Giá</TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    {listBooks.map((book, idx) => (
-                      <TableRow key={idx}>
-                        <TableCell>{book.ctpn_masp}</TableCell>
-                        <TableCell>{book.ctpn_tensp}</TableCell>
-                        <TableCell>{book.ctpn_soluong}</TableCell>
-                        <TableCell>{fCurrency(book.ctpn_gia)}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            onClick={() => {
-                              let _newBook = listBooks.filter(
-                                (b) => b.ctpn_masp !== book.ctpn_masp,
-                              );
-                              setListBooks(_newBook);
-                            }}
-                          >
-                            <Icon icon="ep:remove-filled" color="#F44336" />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </Table>
+                  </Box>
+
+                  {dapAn.length > 0 &&
+                    [...new Set(dapAn.map((e) => e.cauhoi))]
+                      .map((e) => ({
+                        ...dapAn.filter((e1) => e1.cauhoi === e),
+                      }))
+                      .map((e2, idx) => (
+                        <Box key={idx}>
+                          <Typography>
+
+                            <IconButton
+                              onClick={() => {
+                                let _newDapAn = dapAn.filter(
+                                  (da) =>
+                                    da.cauhoi !==
+                                    Object.entries(e2)[0][1].cauhoi,
+                                );
+                                setDapan(_newDapAn);
+                              }}
+                            >
+                              <Icon icon="ep:remove-filled" color="#F44336" />
+                            </IconButton>
+                            <b>Câu hỏi {idx + 1}: </b>
+                            {Object.entries(e2)[0][1].cauhoi}
+                          </Typography>
+                          <Box px={8}>
+                            <ol type="A">
+                              {Object.entries(e2).map((e3, idx2) => (
+                                <Typography
+                                  component="li"
+                                  color={!!e3[1].correct ? 'red' : ''}
+                                  key={idx2}
+                                >
+                                  {e3[1].dapan}
+                                </Typography>
+                              ))}
+                            </ol>
+                          </Box>
+                          <Divider sx={{py: 2}} />
+
+                        </Box>
+                      ))}
                 </Box>
               )}
             </Card>

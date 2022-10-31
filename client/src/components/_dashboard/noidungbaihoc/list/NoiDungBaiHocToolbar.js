@@ -69,7 +69,7 @@ export default function NoiDungBaiHocToolbar({
 
     const deleteNoiDungBaiHoc = async () => {
         try {
-            const res = await deleteData(API_BASE_URL + '/phieunhap', {
+            const res = await deleteData(API_BASE_URL + '/noidungbaihoc', {
                 arrID: JSON.stringify(selected),
             });
             if (setLoad) setLoad((e) => e + 1);

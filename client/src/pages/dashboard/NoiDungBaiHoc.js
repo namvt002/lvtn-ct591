@@ -36,12 +36,9 @@ import NoiDungBaiHocMoreMenu from '../../components/_dashboard/noidungbaihoc/lis
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    {id: 'pn_id', label: 'Mã Phiếu Nhập', alignRight: false},
-    {id: 'pn_idnv', label: 'Mã Nhân Viên', alignRight: false},
-    {id: 'pn_tennv', label: 'Tên Nhân Viên', alignRight: false},
-    {id: 'pn_ncc', label: 'Nhà Cung Cấp', alignRight: false},
-    {id: 'pn_tongtien', label: 'Tổng Tiền', alignRight: false},
-    {id: 'pn_ngaynhap', label: 'Ngày Nhập', alignRight: false},
+    {id: 'pn_id', label: 'Mã nội dung bài học', alignRight: false},
+    {id: 'pn_idnv', label: 'Tiêu đề bài học', alignRight: false},
+    {id: 'pn_tennv', label: 'Bài học', alignRight: false},
     {id: ''},
 ];
 
@@ -62,7 +59,7 @@ export default function NoiDungBaiHocList() {
         (async () => {
             try {
                 const res = await getData(
-                    API_BASE_URL + `/phieunhap?search=${filterName}`,
+                    API_BASE_URL + `/noidungbaihoc?search=${filterName}`,
                 );
                 setDatas(res.data);
             } catch (e) {
@@ -168,18 +165,16 @@ export default function NoiDungBaiHocList() {
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
-                                                pn_id,
-                                                pn_idnv,
-                                                fullname,
-                                                ncc_ten,
-                                                pn_tongtien,
-                                                pn_ngaylapphieu,
+                                                ndbh_id,
+                                                ndbh_tieude,
+                                                bh_ten,
                                             } = row;
-                                            const isItemSelected = selected.indexOf(pn_id) !== -1;
+                                            console.log(row, "rowwwwwwwww")
+                                            const isItemSelected = selected.indexOf(ndbh_id) !== -1;
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={pn_id}
+                                                    key={ndbh_id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={isItemSelected}
@@ -189,7 +184,7 @@ export default function NoiDungBaiHocList() {
                                                         <Checkbox
                                                             checked={isItemSelected}
                                                             onChange={(event) =>
-                                                                handleClick(event, pn_id)
+                                                                handleClick(event, ndbh_id)
                                                             }
                                                         />
                                                     </TableCell>
@@ -200,21 +195,13 @@ export default function NoiDungBaiHocList() {
                                                         padding="none"
                                                     >
                                                         <Typography variant="subtitle2" noWrap>
-                                                            {pn_id}
+                                                            {ndbh_id}
                                                         </Typography>
                                                     </TableCell>
-                                                    <TableCell align="center">{pn_idnv}</TableCell>
-                                                    <TableCell align="left">{fullname}</TableCell>
-                                                    <TableCell align="left">{ncc_ten}</TableCell>
-                                                    <TableCell align="left" sx={{width: '8rem'}}>
-                                                        {fCurrency(pn_tongtien)}
-                                                    </TableCell>
-                                                    <TableCell align="left">
-                                                        {formatDateTime(pn_ngaylapphieu)}
-                                                    </TableCell>
-
+                                                    <TableCell align="center">{ndbh_tieude}</TableCell>
+                                                    <TableCell align="left">{bh_ten}</TableCell>
                                                     <TableCell align="right">
-                                                        <NoiDungBaiHocMoreMenu id={pn_id}/>
+                                                        <NoiDungBaiHocMoreMenu id={ndbh_id}/>
                                                     </TableCell>
                                                 </TableRow>
                                             );

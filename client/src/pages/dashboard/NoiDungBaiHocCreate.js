@@ -30,15 +30,14 @@ export default function NoiDungBaiHocCreate() {
     useEffect(() => {
         (async () => {
             if (isEdit) {
-                const _res = await getData(API_BASE_URL + `/phieunhap/${id}`);
+                const _res = await getData(API_BASE_URL + `/noidungbaihoc/${id}`);
+                console.log(_res.data, "new form")
                 setCurrent(_res.data);
             }
-            const _user = await getData(API_BASE_URL + `/user/${email}/email`);
-            setUser(_user.data);
         })();
     }, [id, isEdit, email]);
     return (
-        <Page title="PN | HYPE">
+        <Page title="Noi dung bai hoc | HYPE">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <HeaderBreadcrumbs
                     heading={!isEdit ? 'Thêm nội dung bài học' : 'Chỉnh sửa'}
@@ -53,7 +52,6 @@ export default function NoiDungBaiHocCreate() {
                     isEdit={isEdit}
                     current={current}
                     id={id}
-                    user={user}
                 />
             </Container>
         </Page>

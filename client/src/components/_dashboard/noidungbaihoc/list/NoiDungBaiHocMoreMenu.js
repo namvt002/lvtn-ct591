@@ -36,7 +36,7 @@ export default function NoiDungBaiHocMoreMenu({id}) {
             >
                 <MenuItem
                     component={RouterLink}
-                    to={`${PATH_DASHBOARD.phieunhap.root}/${id}/edit`}
+                    to={`${PATH_DASHBOARD.noidungbaihoc.root}/${id}/edit`}
                     sx={{color: 'text.secondary'}}
                 >
                     <ListItemIcon>
@@ -49,7 +49,7 @@ export default function NoiDungBaiHocMoreMenu({id}) {
                 </MenuItem>
                 <MenuItem
                     component={RouterLink}
-                    to={`${PATH_DASHBOARD.phieunhap.root}/${id}/detail`}
+                    to={`${PATH_DASHBOARD.noidungbaihoc.root}/${id}/detail`}
                     sx={{color: 'text.secondary'}}
                 >
                     <ListItemIcon>

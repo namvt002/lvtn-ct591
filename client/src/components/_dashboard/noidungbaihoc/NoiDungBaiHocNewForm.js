@@ -11,19 +11,17 @@ import {
     Grid,
     IconButton,
     Stack,
-    Table,
-    TableCell,
-    TableHead,
-    TableRow,
     TextField,
     Typography,
 } from '@material-ui/core';
 //
 import {useEffect, useState} from 'react';
 import {Icon} from '@iconify/react';
-
-import {MIconButton} from '../../@material-extend';
+import { MIconButton } from '../../@material-extend';
 import closeFill from '@iconify/icons-eva/close-fill';
+
+// import {MIconButton} from '../../@material-extend';
+// import closeFill from '@iconify/icons-eva/close-fill';
 import {getData, postData, putData} from "../../../_helper/httpProvider";
 import {API_BASE_URL} from "../../../config/configUrl";
 import {fCurrency} from "../../../_helper/formatCurrentCy";
@@ -32,6 +30,7 @@ import {QuillEditor} from '../../editor';
 
 //----------------code editor
 import Editor from "@monaco-editor/react";
+import Code from '../Code';
 
 const LabelStyle = styled(Typography)(({theme}) => ({
     ...theme.typography.subtitle2,
@@ -49,90 +48,48 @@ NoiDungBaiHocNewForm.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
-
+    console.log('aaaaaaaaa', current)
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
-    const [books, setBooks] = useState([]);
-    const [nhacungcap, setNhacungcap] = useState([]);
-    const [listBooks, setListBooks] = useState([]);
-
+    const [baihoc, setBaiHoc] = useState([]);
+    const [noidungbaihoc, setNoidungbaihoc] = useState([])
+  
     useEffect(() => {
         (async () => {
-            const _books = await getData(API_BASE_URL + '/books');
-            setBooks(_books.data);
-            const _ncc = await getData(API_BASE_URL + '/nhacungcap');
-            setNhacungcap(_ncc.data);
-            if (isEdit && current.length > 0) {
-                current.map(b => {
-                    return setListBooks((preState) => [
-                        ...preState,
-                        {
-                            ctpn_masp: b.sp_masp,
-                            ctpn_idsp: b.ctpn_idsp,
-                            ctpn_tensp: b.sp_ten,
-                            ctpn_gia: b.ctpn_gia,
-                            ctpn_soluong: b.ctpn_soluong,
-                        },
-                    ]);
-                })
-            }
+            const _baihoc = await getData(API_BASE_URL + '/baihocs');
+            setBaiHoc(_baihoc.data)
         })();
     }, [isEdit, current]);
 
-    const NewPhieuNhapSchema = Yup.object().shape({
-        fullname: Yup.string().required('Vui lòng nhập họ tên'),
-        pn_idncc: Yup.object().required('Vui lòng chọn nhà cung cấp'),
-        ctpn_idsp: Yup.object().required('Vui lòng chọn sách'),
-        ctpn_soluong: Yup.number()
-            .min(1, 'Số lượng không hợp lệ')
-            .positive('Số lượng không hợp lệ')
-            .integer('Số lượng không hợp lệ')
-            .required('Vui lòng nhập số lượng'),
-        ctpn_gia: Yup.number()
-            .min(1, 'Giá không hợp lệ')
-            .required('Vui lòng nhập giá'),
+    const NewNoiDungBaiHocSchema = Yup.object().shape({
+        ndbh_idbh: Yup.object().required('Vui lòng chọn bài học'),
+        ndbh_tieude: Yup.string().required('Vui lòng nhập tiêu đề bài học'),
+        ndbh_mota: Yup.string().required('Vui lòng nhập mô tả'),
+        ndbh_code: Yup.string().required('Vui lòng code mẫu'),
     });
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            pn_idnv: current[0]?.idnv || user?.id,
-            fullname: current[0]?.fullname || user?.fullname || '',
-            ctpn_idsp: '',
-            ctpn_soluong: 1,
-            ctpn_gia: 1000,
-            pn_idncc: current[0]?.ncc_id ? {
-                ncc_id: current[0]?.ncc_id,
-                ncc_ten: current[0]?.ncc_ten,
+            ndbh_idbh: current[0]?.ndbh_idbh || '',
+            ndbh_tieude: current[0]?.ndbh_tieude|| '',
+            ndbh_mota:  current[0]?.ndbh_mota || '',
+            ndbh_code: current[0]?.ndbh_code || '',
+            ndbh_idbh: current[0]?.bh_ten ? {
+                bh_id: current[0]?.bh_id,
+                bh_ten: current[0]?.bh_ten,
             } : '',
         },
-        validationSchema: NewPhieuNhapSchema,
+        validationSchema: NewNoiDungBaiHocSchema,
         onSubmit: async (values, {setFieldValue}) => {
-            let check = false;
-            // eslint-disable-next-line array-callback-return
-            listBooks.map((b) => {
-                if (b.ctpn_masp === values.ctpn_idsp.sp_masp) check = true;
-            });
-            if (check) {
-                enqueueSnackbar('Sách đã có trong phiếu nhập!', {
-                    variant: 'error',
-                    action: (key) => (
-                        <MIconButton size="small" onClick={() => closeSnackbar(key)}>
-                            <Icon icon={closeFill}/>
-                        </MIconButton>
-                    ),
-                });
-                return;
-            }
-            setListBooks((preState) => [
-                ...preState,
+            setNoidungbaihoc((pre) => [
+                ...pre,
                 {
-                    ctpn_masp: values.ctpn_idsp.sp_masp,
-                    ctpn_idsp: values.ctpn_idsp.sp_id,
-                    ctpn_tensp: values.ctpn_idsp.sp_ten,
-                    ctpn_gia: values.ctpn_gia,
-                    ctpn_soluong: values.ctpn_soluong,
+                  ndbh_idbh: values.ndbh_idbh.bh_id,
+                  ndbh_tieude: values.ndbh_tieude,
+                  ndbh_mota: values.ndbh_mota,
+                  ndbh_code: values.ndbh_code,
                 },
-            ]);
+              ]);
         },
     });
     const {
@@ -142,11 +99,15 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
         getFieldProps,
         values,
         setFieldValue,
+        resetForm
     } = formik;
-    console.log(errors, values);
+
+    function handleEditorChange(value, event) {
+        setFieldValue('ndbh_code', value)
+    }
     const handleSubmitPN = async () => {
-        if (listBooks.length === 0) {
-            enqueueSnackbar('Chưa có sản phẩm!', {
+        if (noidungbaihoc.length === 0) {
+            enqueueSnackbar('Chưa có nội dung bài học!', {
                 variant: 'error',
                 action: (key) => (
                     <MIconButton size="small" onClick={() => closeSnackbar(key)}>
@@ -156,23 +117,18 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
             });
             return;
         }
-        let _values = {};
-        _values.pn_idncc = values.pn_idncc.ncc_id;
-        _values.pn_idnv = values.pn_idnv;
-        _values.pn_tongtien = listBooks.reduce(
-            (total, item) => item.ctpn_soluong * item.ctpn_gia + total,
-            0,
-        );
-        _values.sanpham = listBooks;
-        console.log(current)
+
         try {
+            values.ndbh_idbh = values.ndbh_idbh.bh_id
             if (isEdit) {
-                await putData(API_BASE_URL + '/phieunhap/' + current[0]?.pn_id, _values);
+                await putData(API_BASE_URL + '/noidungbaihoc/' + current[0]?.ndbh_id, values);
             } else {
-                await postData(API_BASE_URL + '/phieunhap', _values);
-                setListBooks([]);
+                await postData(API_BASE_URL + '/noidungbaihoc', noidungbaihoc);
+                setNoidungbaihoc([])
+                setFieldValue('ndbh_code', '')
+                resetForm();
             }
-            enqueueSnackbar(!isEdit ? 'Thêm thành công[' : 'Cập nhật thành công', {
+            enqueueSnackbar(!isEdit ? 'Thêm thành công' : 'Cập nhật thành công', {
                 variant: 'success',
             });
         } catch (e) {
@@ -190,23 +146,23 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                     <Grid item xs={12} md={12}>
                                         <Autocomplete
                                             freeSolo
-                                            value={values.pn_idncc}
+                                            value={values.ndbh_idbh}
                                             onChange={(event, newValue) => {
-                                                setFieldValue('pn_idncc', newValue || '');
+                                                setFieldValue('ndbh_idbh', newValue || '');
                                             }}
-                                            options={nhacungcap?.map((option) => ({
-                                                ncc_id: option.ncc_id,
-                                                ncc_ten: option.ncc_ten,
+                                            options={baihoc?.map((option) => ({
+                                                bh_id: option.bh_id,
+                                                bh_ten: option.bh_ten,
                                             }))}
                                             renderInput={(params) => (
                                                 <TextField
                                                     label="Chọn bài học"
                                                     {...params}
-                                                    error={Boolean(touched.pn_idncc && errors.pn_idncc)}
-                                                    helperText={touched.pn_idncc && errors.pn_idncc}
+                                                    error={Boolean(touched.ndbh_idbh && errors.ndbh_idbh)}
+                                                    helperText={touched.ndbh_idbh && errors.ndbh_idbh}
                                                 />
                                             )}
-                                            getOptionLabel={(option) => option.ncc_ten || ''}
+                                            getOptionLabel={(option) => option.bh_ten || ''}
                                         />
                                     </Grid>
                                 </Grid>
@@ -215,9 +171,9 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                     <QuillEditor
                                         simple
                                         id="product-description"
-                                        value={values.sp_mota}
+                                        value={values.ndbh_mota}
                                         placeholder="Mô tả ..."
-                                        onChange={(val) => setFieldValue('sp_mota', val)}
+                                        onChange={(val) => setFieldValue('ndbh_mota', val)}
                                     />
                                 </div>
                             </Stack>
@@ -231,9 +187,9 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                         <TextField
                                             fullWidth
                                             label="Tiêu đề bài học"
-                                            {...getFieldProps('sp_ten')}
-                                            error={Boolean(touched.sp_ten && errors.sp_ten)}
-                                            helperText={touched.sp_ten && errors.sp_ten}
+                                            {...getFieldProps('ndbh_tieude')}
+                                            error={Boolean(touched.ndbh_tieude && errors.ndbh_tieude)}
+                                            helperText={touched.ndbh_tieude && errors.ndbh_tieude}
                                         />
                                     </Grid>
                                 </Grid>
@@ -244,10 +200,10 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                             <Editor
                                                 width="96%"
                                                 height="300px"
-                                                defaultLanguage="javascript"
-                                                defaultValue="// some comment"
+                                                defaultLanguage="html"
+                                                value={values.ndbh_code}
                                                 theme='vs-dark'
-                                                // onMount={handleEditorDidMount}
+                                                onChange={handleEditorChange}
                                             />
                                         </div>
                                     </Grid>
@@ -273,59 +229,34 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                     </Grid>
                     <Grid item xs={12} md={12}>
                         <Card>
-                            {listBooks.length > 0 && (
+                            {noidungbaihoc.length > 0 && (
                                 <Box padding={4}>
-                                    <Typography variant="h4" align="center">
-                                        Phiếu nhập
+                                    <Typography variant="h3" align="center">
+                                        {values.ndbh_idbh.bh_ten}
                                     </Typography>
-                                    <Stack
-                                        spacing={{xs: 3, sm: 2}}
-                                        m={2}
-                                    >
-                                        <Typography>
-                                            Nhân viên: <b>{values.fullname}</b>
-                                        </Typography>
-                                        <Typography>
-                                            Nhà cung cấp: <b>{values.pn_idncc?.ncc_ten}</b>
-                                        </Typography>
-                                        <Typography>
-                                            Tổng tiền: <b>{fCurrency(listBooks.reduce(
-                                            (total, item) => item.ctpn_soluong * item.ctpn_gia + total,
-                                            0,
-                                        ))}</b>
-                                        </Typography>
-                                    </Stack>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Mã sản phẩm</TableCell>
-                                                <TableCell>Tên sản phẩm</TableCell>
-                                                <TableCell>Số lượng</TableCell>
-                                                <TableCell>Giá</TableCell>
-                                                <TableCell></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        {listBooks.map((book, idx) => (
-                                            <TableRow key={idx}>
-                                                <TableCell>{book.ctpn_masp}</TableCell>
-                                                <TableCell>{book.ctpn_tensp}</TableCell>
-                                                <TableCell>{book.ctpn_soluong}</TableCell>
-                                                <TableCell>{fCurrency(book.ctpn_gia)}</TableCell>
-                                                <TableCell>
+                                    <Card>
+                                        
+                                        {noidungbaihoc.map((noidung, idx) => (
+                                            // <Box >
+                                                <Typography key={idx} padding={4}>
                                                     <IconButton
                                                         onClick={() => {
-                                                            let _newBook = listBooks.filter(
-                                                                (b) => b.ctpn_masp !== book.ctpn_masp,
+                                                            let _newNoiDungBaiHoc = noidungbaihoc.filter(
+                                                                (b) => !(b.ndbh_idbh === noidung.ndbh_idbh && b.ndbh_tieude === noidung.ndbh_tieude),
                                                             );
-                                                            setListBooks(_newBook);
+                                                            setNoidungbaihoc(_newNoiDungBaiHoc);
                                                         }}
                                                     >
                                                         <Icon icon="ep:remove-filled" color="#F44336"/>
                                                     </IconButton>
-                                                </TableCell>
-                                            </TableRow>
+                                                    <Typography variant="h3">
+                                                        {noidung.ndbh_tieude}
+                                                    </Typography>
+                                                    <div dangerouslySetInnerHTML={{__html: noidung.ndbh_mota}}/>
+                                                    <Code code={noidung.ndbh_code} language="html" />
+                                                </Typography>
                                         ))}
-                                    </Table>
+                                    </Card>
                                 </Box>
                             )}
                         </Card>

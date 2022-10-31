@@ -72,6 +72,9 @@ require("./routes/phieunhap")(app);
 require("./routes/khuyenmai")(app);
 require("./routes/diachi")(app);
 require("./routes/hoadon")(app);
+require("./routes/cauhoi")(app);
+require("./routes/noidungbaihoc")(app);
+
 
 app.get("/", (req, res) => {
     res.send('<a href="/auth/google">Authenticate with Google</a>');

@@ -12,15 +12,15 @@ import {formatDateTime} from "../../_helper/formatDate";
 
 export default function CauHoiDetail() {
     const {themeStretch} = useSettings();
-    const {id} = useParams();
+    // const {id} = useParams();
     const [phieunhapDetail, setPhieunhapDetail] = useState([]);
 
     useEffect(() => {
         (async () => {
-            const _res = await getData(API_BASE_URL + `/phieunhap/${id}`);
+            const _res = await getData(API_BASE_URL + `/cauhois`);
             setPhieunhapDetail((_res.data))
         })()
-    }, [id])
+    }, [])
     return (
         <Page title="PN">
             <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -29,7 +29,7 @@ export default function CauHoiDetail() {
                     links={[
                         {name: 'Quản lý', href: PATH_DASHBOARD.root},
                         {name: 'Câu hỏi', href: PATH_DASHBOARD.cauhoi.root},
-                        {name: id},
+                        // {name: id},
                     ]}
                 />
                 {phieunhapDetail.length > 0 && (

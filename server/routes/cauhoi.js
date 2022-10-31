@@ -4,73 +4,107 @@ const sql = require("../db");
 
 module.exports = function (app) {
     app.post("/cauhoi", async (req, res) => {
-        let _sanpham = req.body.sanpham;
-        let _cauhoi = req.body;
-        delete _cauhoi.sanpham;
-        console.log(_sanpham);
-        const qr_cauhoi = "INSERT INTO cau_hoi SET ?";
-        await db.query(qr_cauhoi, _cauhoi, async (err, _rs_pn) => {
+        let _data = req.body;
+        const qr_cauhoi = "INSERT INTO cau_hoi(ch_noidung, ch_dapan, ch_dapandung, ch_idbkt) VALUES ?";
+        let _dapAnArr = [];
+        _data.cauhoi.map((data)=>_dapAnArr.push([
+            data.cauhoi,
+            data.dapan,
+            data.correct,
+          _data.ch_idbkt
+        ]))
+        await db.query(qr_cauhoi, [_dapAnArr], async (err, _rs_ch) => {
             if (err) {
                 console.log(err);
             }
-            let id_pn = _rs_pn.insertId;
-            let _spArr = [];
-            _sanpham.map((e) =>
-                _spArr.push([e.ctpn_idsp, e.ctpn_soluong, e.ctpn_gia, id_pn])
-            );
-            const qr_ctpn =
-                "INSERT INTO chi_tiet_phieu_nhap(ctpn_idsp, ctpn_soluong, ctpn_gia, ctpn_idpn) VALUES ?";
-            await db.query(qr_ctpn, [_spArr], (err, __) => {
-                if (err) {
-                    console.log(err);
-                }
-            });
             return res.status(200).send("Thêm thành công");
         });
     });
 
-    app.get("/phieunhap", async (req, res) => {
-        const qr_pn = `
-        SELECT phieu_nhap.*, users.fullname, nha_cung_cap.ncc_ten
-        FROM phieu_nhap
-        LEFT JOIN users ON users.id = phieu_nhap.pn_idnv
-        LEFT JOIN nha_cung_cap ON nha_cung_cap.ncc_id = phieu_nhap.pn_idncc
-    `;
-        return res.status(200).send(await query(db, qr_pn));
+    app.get("/cauhois", async (req, res) => {
+        let qr_pn = `
+            SELECT * FROM bai_kiem_tra JOIN khoa_hoc ON bai_kiem_tra.bkt_idkh = khoa_hoc.kh_id 
+        `;
+        if(req.query.search){
+            qr_pn += `
+               AND bai_kiem_tra.bkt_ten like '%${req.query.search}%'
+            `
+        }
+        let _arrBKT = await query(db, qr_pn);
+        await Promise.all(
+            _arrBKT.map(async(data, index)=>{
+                let qr_cauhoi = `
+                    SELECT * FROM cau_hoi WHERE cau_hoi.ch_idbkt = ?
+                `;
+              _arrBKT[index].cauhoi = await query(db, qr_cauhoi, data.bkt_id);
+            })
+        )
+        
+
+        return res.status(200).send(_arrBKT);
     });
 
-    app.get("/phieunhap/:id", async (req, res) => {
+    app.get("/cauhoi/:id", async (req, res) => {
         const {id} = req.params;
         const qr_pn = `
-                    SELECT chi_tiet_phieu_nhap.*, sp_ten, ncc_ten, fullname, sp_masp, phieu_nhap.*, ncc_id
-                      FROM chi_tiet_phieu_nhap 
-                      LEFT JOIN san_pham ON ctpn_idsp = san_pham.sp_id
-                      LEFT JOIN phieu_nhap ON phieu_nhap.pn_id = ctpn_idpn
-                      LEFT JOIN nha_cung_cap ON ncc_id = pn_idncc
-                      LEFT JOIN users ON users.id = pn_idnv
-                    WHERE ctpn_idpn = ?`;
-        return res.status(200).send(await query(db, qr_pn, id));
+            SELECT * FROM bai_kiem_tra JOIN khoa_hoc ON bai_kiem_tra.bkt_idkh = khoa_hoc.kh_id WHERE bai_kiem_tra.bkt_id = ?
+        `;
+        let _arrBKT = await query(db, qr_pn, id);
+        await Promise.all(
+            
+            _arrBKT.map(async(data, index)=>{
+                let qr_cauhoi = `
+                    SELECT * FROM cau_hoi WHERE cau_hoi.ch_idbkt = ?
+                `;
+              _arrBKT[index].cauhoi = await query(db, qr_cauhoi, data.bkt_id);
+            })
+        )
+        
+
+        return res.status(200).send(_arrBKT[0]);
+    });
+
+    app.put("/cauhoi", async (req, res) => {
+        let _data = req.body;
+        const qr_cauhoi = "DELETE FROM cau_hoi WHERE cau_hoi.ch_idbkt = ? ";
+        await db.query(qr_cauhoi, _data.ch_idbkt);
+        const qr_cauhoi_insert = "INSERT INTO cau_hoi(ch_noidung, ch_dapan, ch_dapandung, ch_idbkt) VALUES ? ";
+        let _dapAnArr = [];
+        _data.cauhoi.map((data)=>_dapAnArr.push([
+            data.cauhoi,
+            data.dapan,
+            data.correct,
+          _data.ch_idbkt
+        ]))
+        await db.query(qr_cauhoi_insert, [_dapAnArr], async (err, _rs_ch) => {
+            if (err) {
+                console.log(err);
+            }
+            return res.status(200).send("Thêm thành công");
+        });
     });
 
 
-    app.delete("/phieunhap", async (req, res) => {
+    // app.get("/cauhoi/:id", async (req, res) => {
+    //     const {id} = req.params;
+    //     const qr_pn = `
+                
+    //     `;
+    //     return res.status(200).send(await query(db, qr_pn, id));
+    // });
+
+
+    app.delete("/cauhoi", async (req, res) => {
         if (!!req.body.arrID) {
             const arrID = JSON.parse(req.body.arrID);
             await Promise.all(
                 arrID.map(async (e) => {
-                    let qr = "DELETE FROM phieu_nhap where pn_id = ?";
+                    let qr = "DELETE FROM cau_hoi where ch_id = ?";
                     await sql.query(qr, [e], (err, _) => {
                         if (err) {
                             console.log(err);
                         }
                     });
-
-                    await sql.query("DELETE FROM chi_tiet_phieu_nhap where ctpn_idpn = ?", [e], (err, _) => {
-                        if (err) {
-                            console.log(err);
-                        }
-                    });
-
                 })
             );
             return res.status(201).send("Xóa thành công!");
