@@ -64,11 +64,11 @@ const sidebarConfig = [
                 path: PATH_DASHBOARD.cauhoi.root,
                 icon: ICONS.phieunhap,
             },
-            {
-                title: 'Nhập hàng',
-                path: PATH_DASHBOARD.phieunhap.root,
-                icon: ICONS.phieunhap,
-            }
+            // {
+            //     title: 'Nhập hàng',
+            //     path: PATH_DASHBOARD.phieunhap.root,
+            //     icon: ICONS.phieunhap,
+            // }
             // ,{
             //     title: 'Khuyến mãi',
             //     path: PATH_DASHBOARD.khuyenmai.root,

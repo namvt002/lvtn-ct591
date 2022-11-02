@@ -27,32 +27,28 @@ import { getData, postData, putData } from '../../../_helper/httpProvider';
 import { API_BASE_URL } from '../../../config/configUrl';
 
 // ----------------------------------------------------------------------
-CauHoiNewForm.propTypes = {
-  isEdit: PropTypes.bool,
-  currentUser: PropTypes.object,
-  id: PropTypes.string,
-  user: PropTypes.object,
-};
 // ----------------------------------------------------------------------
 
 export default function CauHoiNewForm({ isEdit, current, id, user }) {
-  console.log('aaaaaaaaaaaa', current);
+  // console.log('aaaaaaaaaaaa', current);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [baikiemtra, setBaiKiemTra] = useState([]);
-  const [dapAn, setDapan] = useState(
-    current.cauhoi
-      ? current?.cauhoi.map((e) => ({
-          cauhoi: e.ch_noidung,
-          dapan: e.ch_dapan,
-          correct: e.ch_dapandung,
-        }))
-      : [],
-  );
+  const [dapAn, setDapan] = useState([]);
+
+  console.log(current);
 
   useEffect(() => {
     (async () => {
       const _baiKiemTra = await getData(API_BASE_URL + '/baikiemtras');
       setBaiKiemTra(_baiKiemTra.data);
+      if (isEdit)
+        setDapan(
+          current?.cauhoi?.map((e) => ({
+            cauhoi: e.ch_noidung,
+            dapan: e.ch_dapan,
+            correct: e.ch_dapandung,
+          })),
+        );
     })();
   }, [isEdit, current]);
 
@@ -116,10 +112,7 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
 
     try {
       if (isEdit) {
-        await putData(
-          API_BASE_URL + '/cauhoi',
-          _values,
-        );
+        await putData(API_BASE_URL + '/cauhoi', _values);
       } else {
         await postData(API_BASE_URL + '/cauhoi', _values);
         setDapan([]);
@@ -225,7 +218,7 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
           </Grid>
           <Grid item xs={12} md={12}>
             <Card>
-              {dapAn.length > 0 && (
+              {dapAn?.length > 0 && (
                 <Box padding={4}>
                   <Box p={4}>
                     <Typography variant="h3" align="center">
@@ -233,47 +226,43 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
                     </Typography>
                   </Box>
 
-                  {dapAn.length > 0 &&
-                    [...new Set(dapAn.map((e) => e.cauhoi))]
-                      .map((e) => ({
-                        ...dapAn.filter((e1) => e1.cauhoi === e),
-                      }))
-                      .map((e2, idx) => (
-                        <Box key={idx}>
-                          <Typography>
-
-                            <IconButton
-                              onClick={() => {
-                                let _newDapAn = dapAn.filter(
-                                  (da) =>
-                                    da.cauhoi !==
-                                    Object.entries(e2)[0][1].cauhoi,
-                                );
-                                setDapan(_newDapAn);
-                              }}
-                            >
-                              <Icon icon="ep:remove-filled" color="#F44336" />
-                            </IconButton>
-                            <b>Câu hỏi {idx + 1}: </b>
-                            {Object.entries(e2)[0][1].cauhoi}
-                          </Typography>
-                          <Box px={8}>
-                            <ol type="A">
-                              {Object.entries(e2).map((e3, idx2) => (
-                                <Typography
-                                  component="li"
-                                  color={!!e3[1].correct ? 'red' : ''}
-                                  key={idx2}
-                                >
-                                  {e3[1].dapan}
-                                </Typography>
-                              ))}
-                            </ol>
-                          </Box>
-                          <Divider sx={{py: 2}} />
-
+                  {[...new Set(dapAn.map((e) => e.cauhoi))]
+                    .map((e) => ({
+                      ...dapAn.filter((e1) => e1.cauhoi === e),
+                    }))
+                    .map((e2, idx) => (
+                      <Box key={idx}>
+                        <Typography>
+                          <IconButton
+                            onClick={() => {
+                              let _newDapAn = dapAn.filter(
+                                (da) =>
+                                  da.cauhoi !== Object.entries(e2)[0][1].cauhoi,
+                              );
+                              setDapan(_newDapAn);
+                            }}
+                          >
+                            <Icon icon="ep:remove-filled" color="#F44336" />
+                          </IconButton>
+                          <b>Câu hỏi {idx + 1}: </b>
+                          {Object.entries(e2)[0][1].cauhoi}
+                        </Typography>
+                        <Box px={8}>
+                          <ol type="A">
+                            {Object.entries(e2).map((e3, idx2) => (
+                              <Typography
+                                component="li"
+                                color={!!e3[1].correct ? 'red' : ''}
+                                key={idx2}
+                              >
+                                {e3[1].dapan}
+                              </Typography>
+                            ))}
+                          </ol>
                         </Box>
-                      ))}
+                        <Divider sx={{ py: 2 }} />
+                      </Box>
+                    ))}
                 </Box>
               )}
             </Card>

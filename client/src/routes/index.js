@@ -301,7 +301,7 @@ export default function Router() {
             element: <MainLayout/>,
             children: [{
                 path: '/',
-                element: <ProductList/>
+                element: <HomeLearnCode />
             }, {
                 path: 'change-password',
                 element: <ChangePassword/>
@@ -386,6 +386,7 @@ const NgonNguList = Loadable(lazy(() => import('../pages/dashboard/NgonNgu')));
 const BookList = Loadable(lazy(() => import('../pages/dashboard/Book')));
 const KhoaHocList = Loadable(lazy(() => import('../pages/dashboard/KhoaHoc')));
 const ProductList = Loadable(lazy(() => import('../pages/homepages/ShopProduct')));
+const HomeLearnCode = Loadable(lazy(() => import('../pages/homepages/HomeLearnCode')));
 const ProductDetail = Loadable(lazy(() => import('../pages/homepages/ProductDetail')));
 const ShopCart = Loadable(lazy(() => import('../pages/homepages/ShopCart')));
 const BookCreate = Loadable(

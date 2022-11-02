@@ -22,7 +22,7 @@ export default function CauHoiCreate() {
   const { pathname } = useLocation();
   const { id } = useParams();
   const isEdit = pathname.includes('edit');
-  const [current, setCurrent] = useState({});
+  const [current, setCurrent] = useState([]);
 
   const { email } = useSelector((state) => state.user.current);
 
@@ -45,10 +45,7 @@ export default function CauHoiCreate() {
             { name: !isEdit ? 'Câu hỏi' : id },
           ]}
         />
-
-        {current?.cauhoi && (
-          <CauHoiNewForm isEdit={isEdit} current={current} id={id} />
-        )}
+       <CauHoiNewForm isEdit={isEdit} current={current} id={id} />
       </Container>
     </Page>
   );

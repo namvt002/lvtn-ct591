@@ -29,8 +29,6 @@ import {getData} from '../../_helper/httpProvider';
 import {API_BASE_URL} from '../../config/configUrl';
 import NoiDungBaiHocListHead from '../../components/_dashboard/noidungbaihoc/list/NoiDungBaiHocListHead';
 import NoiDungBaiHocToolbar from '../../components/_dashboard/noidungbaihoc/list/NoiDungBaiHocToolbar';
-import {fCurrency} from '../../_helper/formatCurrentCy';
-import {formatDateTime} from '../../_helper/formatDate';
 import NoiDungBaiHocMoreMenu from '../../components/_dashboard/noidungbaihoc/list/NoiDungBaiHocMoreMenu';
 
 // ----------------------------------------------------------------------
@@ -168,8 +166,8 @@ export default function NoiDungBaiHocList() {
                                                 ndbh_id,
                                                 ndbh_tieude,
                                                 bh_ten,
+                                                bh_id
                                             } = row;
-                                            console.log(row, "rowwwwwwwww")
                                             const isItemSelected = selected.indexOf(ndbh_id) !== -1;
                                             return (
                                                 <TableRow
@@ -201,7 +199,7 @@ export default function NoiDungBaiHocList() {
                                                     <TableCell align="center">{ndbh_tieude}</TableCell>
                                                     <TableCell align="left">{bh_ten}</TableCell>
                                                     <TableCell align="right">
-                                                        <NoiDungBaiHocMoreMenu id={ndbh_id}/>
+                                                        <NoiDungBaiHocMoreMenu id={bh_id} noidungbaihocDetail={_datas}/>
                                                     </TableCell>
                                                 </TableRow>
                                             );

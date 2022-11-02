@@ -1,6 +1,6 @@
 import {Box, Container, Stack, Table, TableCell, TableHead, TableRow, Typography} from '@material-ui/core';
 import {useEffect, useState} from 'react';
-import {useParams} from 'react-router';
+// import {useParams} from 'react-router';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Page from '../../components/Page';
 import useSettings from '../../hooks/useSettings';

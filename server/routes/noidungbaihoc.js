@@ -21,7 +21,9 @@ module.exports = function (app) {
     });
 
     app.get("/noidungbaihoc", async (req, res) => {
-        let qr = " SELECT * FROM noi_dung_bai_hoc JOIN bai_hoc ON noi_dung_bai_hoc.ndbh_idbh = bai_hoc.bh_id  ";
+        let qr = ` 
+            SELECT * FROM noi_dung_bai_hoc JOIN bai_hoc ON noi_dung_bai_hoc.ndbh_idbh = bai_hoc.bh_id GROUP BY bai_hoc.bh_id 
+        `
         if (req.query.search) {
             qr += ` WHERE noi_dung_bai_hoc.ndbh_tieude like '%${req.query.search}%' 
                             or bai_hoc.bh_ten like '%${req.query.search}%'
@@ -40,7 +42,7 @@ module.exports = function (app) {
         const {id} = req.params;
         const qr_ndbkt = `
             SELECT * FROM noi_dung_bai_hoc JOIN bai_hoc ON noi_dung_bai_hoc.ndbh_idbh = bai_hoc.bh_id 
-            WHERE noi_dung_bai_hoc.ndbh_id = ?
+            WHERE bai_hoc.bh_id = ?
         `;
         return res.status(200).send(await query(db, qr_ndbkt, id));
     });

@@ -1,0 +1,56 @@
+.sidebar_left {
+    /* display: flex; */
+    position: fixed;
+    /* flex-direction: column; */
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 24px;
+    padding-bottom: 16px;
+}
+.sidebar_left .sidebar_left_wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    left: 0;
+    padding: 0 8px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 88px;
+    width: var(--width);
+    z-index: 8;
+    margin-top: 5rem;
+}
+.sidebar_left .sidebar_left_wrapper .btn_add {
+    width: 44px !important;
+    height: 44px !important;
+}
+.sidebar_left .sidebar_left_wrapper .sidebar_list {
+    list-style-type: none;
+    padding-left: 0;
+}
+.sidebar_left .sidebar_left_wrapper .sidebar_list a {
+    text-decoration: none;
+    outline: none;
+}
+.sidebar_left .sidebar_left_wrapper .sidebar_list .sidebar_items_active {
+    background-color: #e8ebed;
+    color: #1a1a1a;
+}
+.sidebar_left .sidebar_left_wrapper .sidebar_list .sidebar_items {
+    align-items: center;
+    border-radius: 16px;
+    color: #404040;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 72px;
+    justify-content: center;
+    margin-top: 4px;
+    width: 72px;
+}
+.sidebar_left .sidebar_left_wrapper .sidebar_list span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}

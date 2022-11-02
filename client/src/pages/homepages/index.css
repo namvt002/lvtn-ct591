@@ -1,0 +1,301 @@
+.home_wrapper {
+    display: flex;
+    min-height: 100vh;
+    padding-top: 88px;
+}
+.home_wrapper .sidebar_content {
+    max-width: calc(100% - 96px);
+    width: 100%;
+    padding: 0 40px 0 20px;
+}
+.home_wrapper .sidebar_content .introduc_bg {
+    background-color: #282a35 !important;
+    color: white !important;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-top: 90px;
+    padding-bottom: 90px;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc .sidebar_title {
+    width: 100%;
+    font-size: 70px;
+    font-weight: 700;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc .sidebar_title span {
+    color: #1473e6;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc .sidebar_h3 {
+    color: orange;
+    font-weight: 700;
+    margin-top: 30px !important;
+    font-size: 23px;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc .introduc_question {
+    font-size: 23px;
+    font-weight: 700;
+    margin-top: 30px !important;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc .introduc_question a {
+    color: white;
+    cursor: pointer;
+}
+.home_wrapper .sidebar_content .sidebar_content_introduc .introduc_question :hover {
+    color: #1473e6 !important;
+}
+.home_wrapper .sidebar_content .design_shape {
+    background-color: #d9eee1;
+    width: 100%;
+    height: 70px;
+}
+.home_wrapper .sidebar_content .design_shape .design_shape_cl {
+    fill: #282a35;
+}
+.home_wrapper .sidebar_content .html_bg {
+    background-color: #d9eee1 !important;
+    color: black !important;
+}
+.home_wrapper .sidebar_content .home_sidebar_content {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    width: 100%;
+    background-color: #d9eee1 !important;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 80vh;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l {
+    float: left;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l .languages_title {
+    font-size: 70px;
+    font-weight: 700;
+    margin-top: -18px !important;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l h1 {
+    margin: 2px 0 -20px 0 !important;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l .btn_lg {
+    font-size: 18px;
+    margin: auto;
+    display: block;
+    width: 200px;
+    border-radius: 25px;
+    border: none;
+    padding: 8px 16px;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l .cl_learn_lg {
+    background-color: #1473e6;
+    color: white;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l .cl_learn_lg:hover {
+    background-color: #0968dd;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l .cl_reference {
+    background-color: #fff4a3;
+    color: #000;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l .cl_reference:hover {
+    background-color: #fff080;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_l a {
+    text-decoration: none;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .languages_l_col {
+    width: 43.99999%;
+    text-align: center !important;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_r {
+    float: right;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_r .html_wd {
+    background-color: #e7e9eb;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 #000, 0 2px 10px 0 #000;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_r .html_wd .ct_html_ex {
+    border-left: 4px solid #1473e6;
+    font-size: 15px;
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+    width: auto;
+    background-color: #fff;
+    color: #000;
+    padding: 8px 12px;
+    word-wrap: break-word;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_r .html_wd .btn_try {
+    background-color: #1473e6;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    display: block;
+    width: 200px;
+    border-radius: 25px;
+    border: none;
+    padding: 8px 16px;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .home_content_lg_r .html_wd .btn_try:hover {
+    background-color: #0968dd;
+}
+.home_wrapper .sidebar_content .home_sidebar_content .home_content_lg .r16 {
+    width: 43.99999%;
+}
+.home_wrapper .sidebar_content .css_bg {
+    background-color: #fff4a3 !important;
+    color: #000 !important;
+}
+.home_wrapper .sidebar_content .css_reference {
+    background-color: #282a35;
+    color: #fff;
+}
+.home_wrapper .sidebar_content .css_reference:hover {
+    background-color: #000;
+}
+.home_wrapper .sidebar_content .jscr_bg {
+    background-color: #282a35 !important;
+    color: white !important;
+}
+.home_wrapper .sidebar_content .jscr_reference {
+    background-color: #fff;
+    color: #000;
+}
+.home_wrapper .sidebar_content .jscr_reference:hover {
+    background-color: #e7e9eb;
+}
+.home_wrapper .sidebar_content .sql_bg {
+    background-color: #96d4d4 !important;
+    color: black !important;
+}
+.home_wrapper .sidebar_content .course_bg {
+    background-color: #282a35 !important;
+    color: white !important;
+}
+.home_wrapper .sidebar_content .home_courses {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    width: 100%;
+    height: 80vh;
+}
+.home_wrapper .sidebar_content .home_courses .home_courses_content {
+    float: left;
+}
+.home_wrapper .sidebar_content .home_courses .home_courses_content .course_col_l {
+    border-radius: 5px;
+}
+.home_wrapper .sidebar_content .home_courses .home_courses_content .home_course_items {
+    color: black;
+    padding: 24px;
+    box-shadow: 0 2px 5px 0 #000, 0 2px 10px 0 #000;
+}
+.home_wrapper .sidebar_content .home_courses .home_courses_content .home_coures_items_title {
+    color: #3a3a3a !important;
+    margin-top: -20px;
+}
+.home_wrapper .sidebar_content .home_courses .home_courses_content .btn_learn_course {
+    background-color: #282a35;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    border: none;
+    padding: 8px 16px;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer;
+    margin: auto;
+    display: block;
+    width: 200px;
+    border-radius: 25px;
+}
+.home_wrapper .sidebar_content .home_courses .home_courses_content .btn_learn_course:hover {
+    background-color: black;
+}
+.home_wrapper .sidebar_content .home_courses .course_col {
+    width: 43.99999%;
+    text-align: center !important;
+}
+.home_wrapper .sidebar_content .home_code_editor {
+    background-color: #282a35 !important;
+    color: white !important;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content {
+    padding: 8px 16px !important;
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .code_editor_container {
+    padding-top: 20px;
+    border-radius: 4px;
+    height: auto;
+    background: #f1f1f1;
+    padding: 10px;
+    width: 974px;
+    margin: auto;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .code_editor_container .code_editor_container_row {
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .code_editor_container .code_editor_container_row .code_editor_container_col {
+    float: left;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .code_editor_container .code_editor_container_row .code_editor_container_col .code_editor_dot {
+    height: 20px;
+    width: 20px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 5px;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .code_editor_container .code_editor_container_row .code_editor_container_col .code_editor_address {
+    width: 80%;
+    border-radius: 3px;
+    border: none;
+    background-color: white;
+    margin-top: -8px;
+    height: 22px;
+    color: #666;
+    font-size: 14px;
+    padding: 5px;
+    padding-top: 10px;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .code_editor_container .code_editor_container_row .code_editor_container_col .code_editor_img_coding {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .btn_try {
+    background-color: #1473e6;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    display: block;
+    width: 200px;
+    border-radius: 25px;
+    border: none;
+    padding: 8px 16px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-left: 90px;
+    margin-top: 20px;
+}
+.home_wrapper .sidebar_content .home_code_editor .code_editor_content .btn_try:hover {
+    background-color: #0968dd;
+}

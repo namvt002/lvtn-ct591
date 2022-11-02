@@ -24,7 +24,6 @@ import closeFill from '@iconify/icons-eva/close-fill';
 // import closeFill from '@iconify/icons-eva/close-fill';
 import {getData, postData, putData} from "../../../_helper/httpProvider";
 import {API_BASE_URL} from "../../../config/configUrl";
-import {fCurrency} from "../../../_helper/formatCurrentCy";
 import {styled} from '@material-ui/core/styles';
 import {QuillEditor} from '../../editor';
 
@@ -48,7 +47,7 @@ NoiDungBaiHocNewForm.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
-    console.log('aaaaaaaaa', current)
+    
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const [baihoc, setBaiHoc] = useState([]);
     const [noidungbaihoc, setNoidungbaihoc] = useState([])

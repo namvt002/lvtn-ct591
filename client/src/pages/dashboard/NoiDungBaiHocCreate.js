@@ -23,7 +23,6 @@ export default function NoiDungBaiHocCreate() {
     const {id} = useParams();
     const isEdit = pathname.includes('edit');
     const [current, setCurrent] = useState({});
-    const [user, setUser] = useState({});
 
     const {email} = useSelector((state) => state.user.current);
 
