@@ -24,8 +24,8 @@ module.exports = function (app) {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.post("/khoahoc/create", upload.array("kh_hinhanh", 10), async (req, res) => {
-    console.log(req.body, "beeeeeee")
     let { data } = req.body;
+    console.log(data)
     data = JSON.parse(data);
     delete data.kh_hinhanh_old;
     const qr_sp = "SELECT * FROM khoa_hoc WHERE kh_makh = ?";

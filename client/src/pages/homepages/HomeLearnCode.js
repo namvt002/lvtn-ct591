@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from 'src/config/configUrl';
+import { getData } from 'src/_helper/httpProvider';
 import './index.css';
 
 
 const Home = () => {
+	const [khoaHoc, setKhoaHoc] = useState([]);
+	useEffect(() => {
+        (async () => {
+            const res = await getData(API_BASE_URL + '/khoahocs');
+            setKhoaHoc(res.data);
+        })();
+    }, []);
 	return (
 		< >
 			<div className="home_wrapper">
@@ -122,7 +131,6 @@ const Home = () => {
 								<a className="cl_learn_lg btn_lg" href="/" style={{ marginBottom: "5px" }}>Học CSS</a>
 								<br></br>
 								<a className="btn_lg css_reference" href="/" style={{ marginBottom: "5px" }}>Tài liệu CSS</a>
-
 							</div>
 							<div className="home_content_lg_r r16" style={{ padding: "3%", bgcolor: '#D9EEE1 !important' }}>
 								<div className="html_wd" style={{ padding: "16px" }} >
@@ -174,10 +182,6 @@ const Home = () => {
 											<br></br>
 											<span style={{ color: 'black' }}> &#125;</span>
 										</div>
-
-
-
-
 									</div>
 									<a className="btn_try" href="/" style={{ marginBottom: "5px" }}>Click Để Thử</a>
 
