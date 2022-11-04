@@ -47,7 +47,7 @@ NoiDungBaiHocNewForm.propTypes = {
 // ----------------------------------------------------------------------
 
 export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
-    
+    // console.log("edit", current)
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const [baihoc, setBaiHoc] = useState([]);
     const [noidungbaihoc, setNoidungbaihoc] = useState([])
@@ -55,7 +55,17 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
     useEffect(() => {
         (async () => {
             const _baihoc = await getData(API_BASE_URL + '/baihocs');
-            setBaiHoc(_baihoc.data)
+            setBaiHoc(_baihoc.data);
+            if(isEdit && current.length > 0){
+                setNoidungbaihoc(current?.map(e => 
+                    ({
+                        ndbh_idbh: e.bh_id,
+                        ndbh_tieude: e.ndbh_tieude,
+                        ndbh_mota: e.ndbh_mota,
+                        ndbh_code: e.ndbh_code,
+                    })
+                ))
+            }
         })();
     }, [isEdit, current]);
 
@@ -69,10 +79,10 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            ndbh_idbh: current[0]?.ndbh_idbh || '',
-            ndbh_tieude: current[0]?.ndbh_tieude|| '',
-            ndbh_mota:  current[0]?.ndbh_mota || '',
-            ndbh_code: current[0]?.ndbh_code || '',
+            ndbh_idbh:'',
+            ndbh_tieude: '',
+            ndbh_mota:  '',
+            ndbh_code:  '',
             ndbh_idbh: current[0]?.bh_ten ? {
                 bh_id: current[0]?.bh_id,
                 bh_ten: current[0]?.bh_ten,
@@ -120,7 +130,7 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
         try {
             values.ndbh_idbh = values.ndbh_idbh.bh_id
             if (isEdit) {
-                await putData(API_BASE_URL + '/noidungbaihoc/' + current[0]?.ndbh_id, values);
+                await putData(API_BASE_URL + '/noidungbaihoc/' + current[0]?.ndbh_idbh, noidungbaihoc);
             } else {
                 await postData(API_BASE_URL + '/noidungbaihoc', noidungbaihoc);
                 setNoidungbaihoc([])

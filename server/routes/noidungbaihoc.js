@@ -69,9 +69,19 @@ module.exports = function (app) {
         const {id} = req.params;
         const data = req.body;
         console.log(data)
-        const qr = "UPDATE noi_dung_bai_hoc SET ? WHERE ndbh_id = ?";
-        sql.query(qr, [data, id], (err, _) => {
+        const qr_noidung = "DELETE FROM noi_dung_bai_hoc WHERE noi_dung_bai_hoc.ndbh_idbh = ? ";
+        await db.query(qr_noidung, id);
+        const qr = "INSERT INTO noi_dung_bai_hoc(ndbh_mota, ndbh_code, ndbh_tieude, ndbh_idbh) VALUES ? ";
+        let _dapAnArr = [];
+        data.map((noidung)=>_dapAnArr.push([
+            noidung.ndbh_mota,
+            noidung.ndbh_code,
+            noidung.ndbh_tieude,
+            data[0].ndbh_idbh
+        ]))
+        sql.query(qr, [_dapAnArr], (err, _) => {
             if (err) {
+                console.log(err);
                 return res.status(500).send(err);
             }
             return res.status(200).send("Cập nhật thành công!");

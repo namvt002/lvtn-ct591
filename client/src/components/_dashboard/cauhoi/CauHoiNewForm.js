@@ -104,8 +104,6 @@ export default function CauHoiNewForm({ isEdit, current, id, user }) {
       return;
     }
 
-    console.log(values);
-
     let _values = {};
     _values.ch_idbkt = values.ch_idbkt.bkt_id;
     _values.cauhoi = dapAn;

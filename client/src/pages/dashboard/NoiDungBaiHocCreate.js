@@ -36,7 +36,7 @@ export default function NoiDungBaiHocCreate() {
         })();
     }, [id, isEdit, email]);
     return (
-        <Page title="Noi dung bai hoc | HYPE">
+        <Page title="Nội dung bài học | LearnCode">
             <Container maxWidth={themeStretch ? false : 'lg'}>
                 <HeaderBreadcrumbs
                     heading={!isEdit ? 'Thêm nội dung bài học' : 'Chỉnh sửa'}
