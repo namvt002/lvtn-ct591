@@ -61,7 +61,7 @@
     padding-top: 32px;
     padding-bottom: 32px;
     width: 100%;
-    background-color: #d9eee1 !important;
+    /* background-color: #d9eee1 !important; */
 }
 .home_wrapper .sidebar_content .home_sidebar_content .home_content_lg {
     margin-left: auto;
