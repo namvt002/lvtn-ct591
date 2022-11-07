@@ -64,47 +64,6 @@ const sidebarConfig = [
                 path: PATH_DASHBOARD.cauhoi.root,
                 icon: ICONS.phieunhap,
             },
-            // {
-            //     title: 'Nhập hàng',
-            //     path: PATH_DASHBOARD.phieunhap.root,
-            //     icon: ICONS.phieunhap,
-            // }
-            // ,{
-            //     title: 'Khuyến mãi',
-            //     path: PATH_DASHBOARD.khuyenmai.root,
-            //     icon: ICONS.giamgia,
-            // },
-            // {
-            //     title: 'Nhà xuất bản',
-            //     path: PATH_DASHBOARD.nhaxuatban.root,
-            //     icon: ICONS.tacgia,
-            // },
-            // {
-            //     title: 'Nhà cung cấp',
-            //     path: PATH_DASHBOARD.nhacungcap.root,
-            //     icon: ICONS.tacgia,
-            // },
-            // {
-            //     title: 'Tác giả',
-            //     path: PATH_DASHBOARD.tacgia.root,
-            //     icon: ICONS.user,
-            // },
-
-            // {
-            //     title: 'Danh mục',
-            //     path: PATH_DASHBOARD.danhmuc.root,
-            //     icon: ICONS.danhmuc,
-            // },
-            // {
-            //     title: 'Thể loại',
-            //     path: PATH_DASHBOARD.theloai.root,
-            //     icon: ICONS.danhmuc,
-            // },
-            // {
-            //     title: 'Ngôn ngữ',
-            //     path: PATH_DASHBOARD.ngonngu.root,
-            //     icon: ICONS.ngonngu,
-            // },
         ],
     },
 ];

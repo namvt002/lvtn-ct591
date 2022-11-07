@@ -169,27 +169,7 @@ export default function Router() {
                         },
                     ],
                 },
-                {
-                    path: 'phieunhap',
-                    children: [
-                        {
-                            path: '',
-                            element: <PhieuNhapList/>,
-                        },
-                        {
-                            path: 'new',
-                            element: <PhieuNhapCreate/>,
-                        },
-                        {
-                            path: ':id/edit',
-                            element: <PhieuNhapCreate/>,
-                        },
-                        {
-                            path: ':id/detail',
-                            element: <PhieuNhapDetail/>,
-                        },
-                    ],
-                },
+              
                 {
                     path: 'role',
                     children: [
@@ -207,49 +187,7 @@ export default function Router() {
                         },
                     ],
                 },
-                {
-                    path: 'nhaxuatban',
-                    children: [
-                        {
-                            path: '',
-                            element: <NhaXuatBanList/>,
-                        },
-                        {
-                            path: 'new',
-                            element: <NhaXuatBanCreate/>,
-                        },
-                        {
-                            path: ':id/edit',
-                            element: <NhaXuatBanCreate/>,
-                        },
-                    ],
-                },
-                {
-                    path: 'nhacungcap',
-                    children: [
-                        {
-                            path: '',
-                            element: <NhaCungCapList/>,
-                        },
-                        {
-                            path: 'new',
-                            element: <NhaCungCapCreate/>,
-                        },
-                        {
-                            path: ':id/edit',
-                            element: <NhaCungCapCreate/>,
-                        },
-                    ],
-                },
-                {
-                    path: 'tacgia',
-                    children: [
-                        {
-                            path: '',
-                            element: <TacGiaList/>,
-                        },
-                    ],
-                },
+               
                 {
                     path: 'danhmuc',
                     children: [
@@ -258,31 +196,8 @@ export default function Router() {
                             element: <DanhMucList/>,
                         },
                     ],
-                },
-                {
-                    path: 'theloai',
-                    children: [
-                        {
-                            path: '',
-                            element: <TheLoaiList/>,
-                        },
-                    ],
-                },
-                {
-                    path: 'ngonngu',
-                    children: [
-                        {
-                            path: '',
-                            element: <NgonNguList/>,
-                        },
-                    ],
-                }, {
-                    path: 'khuyenmai',
-                    children: [{
-                        path: '',
-                        element: <KhuyenMai/>
-                    }]
                 }
+
             ],
         },
 
@@ -355,33 +270,15 @@ const RoleCreate = Loadable(
     lazy(() => import('../pages/dashboard/RoleCreate')),
 );
 
-//--------------------------nhaxuatban-------------------------------------------
-const NhaXuatBanList = Loadable(
-    lazy(() => import('../pages/dashboard/NhaXuatBan')),
-);
-const NhaXuatBanCreate = Loadable(
-    lazy(() => import('../pages/dashboard/NXBCreate')),
-);
 
-//--------------------------nhacungcap-------------------------------------------
-const NhaCungCapList = Loadable(
-    lazy(() => import('../pages/dashboard/NhaCungCap')),
-);
-const NhaCungCapCreate = Loadable(
-    lazy(() => import('../pages/dashboard/NCCCreate')),
-);
+
 //--------------------------Danh Muc-------------------------------------------
 const DanhMucList = Loadable(lazy(() => import('../pages/dashboard/DanhMuc')));
-//--------------------------Tác giả-------------------------------------------
-const TacGiaList = Loadable(lazy(() => import('../pages/dashboard/TacGia')));
-//--------------------------Thể loại-------------------------------------------
-const TheLoaiList = Loadable(lazy(() => import('../pages/dashboard/TheLoai')));
 //--------------------------BaiHoc-------------------------------------------
 const BaiHocList = Loadable(lazy(() => import('../pages/dashboard/BaiHoc')));
 //--------------------------Bai kiem tra-------------------------------------------
 const BaiKiemTraList = Loadable(lazy(() => import('../pages/dashboard/BaiKiemTra')));
 //--------------------------Ngôn ngữ-------------------------------------------
-const NgonNguList = Loadable(lazy(() => import('../pages/dashboard/NgonNgu')));
 //--------------------------Sách-------------------------------------------
 const BookList = Loadable(lazy(() => import('../pages/dashboard/Book')));
 const KhoaHocList = Loadable(lazy(() => import('../pages/dashboard/KhoaHoc')));
@@ -398,19 +295,6 @@ const KhoaHocCreate = Loadable(
 );
 
 
-//--------------------------Phiếu nhập-------------------------------------------
-
-const PhieuNhapList = Loadable(
-    lazy(() => import('../pages/dashboard/PhieuNhap')),
-);
-
-const PhieuNhapCreate = Loadable(
-    lazy(() => import('../pages/dashboard/PhieuNhapCreate')),
-);
-
-const PhieuNhapDetail = Loadable(
-    lazy(() => import('../pages/dashboard/PhieuNhapDetail')),
-);
 
 //--------------------------Câu hỏi-------------------------------------------
 
@@ -440,9 +324,6 @@ const NoiDungBaiHocDetail = Loadable(
     lazy(() => import('../pages/dashboard/NoiDungBaiHocDetail')),
 );
 
-//----------------d-----------------Giam gia--------------------------------------
-const KhuyenMai = Loadable(lazy(() => import('../pages/dashboard/KhuyenMai')));
-//-------------------------------------------------------------------------------
 
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

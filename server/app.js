@@ -58,20 +58,10 @@ app.get(
 require("./routes/auth")(app);
 require("./routes/Users")(app);
 require("./routes/Role")(app);
-require("./routes/nhaxuatban")(app);
-require("./routes/nhacungcap")(app);
 require("./routes/danhmuc")(app);
-require("./routes/tacgia")(app);
-require("./routes/theloai")(app);
-require("./routes/ngonngu")(app);
-require("./routes/book")(app);
 require("./routes/khoahoc")(app);
 require("./routes/baihoc")(app);
 require("./routes/baikiemtra")(app);
-require("./routes/phieunhap")(app);
-require("./routes/khuyenmai")(app);
-require("./routes/diachi")(app);
-require("./routes/hoadon")(app);
 require("./routes/cauhoi")(app);
 require("./routes/noidungbaihoc")(app);
 

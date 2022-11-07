@@ -77,11 +77,6 @@ export default function MainNavbar() {
                     </Typography>
                     <Box sx={{flexGrow: 1}}/>
                     <Searchbar/>
-                    <Box mx={2} component={Link} to={PATH_PAGE.shopcart}>
-                        <Badge showZero badgeContent={cartCount} color="error" max={99}>
-                            <IconCart/>
-                        </Badge>
-                    </Box>
                     {isLogined ? (
                         <AccountPopover/>
                     ) : (
