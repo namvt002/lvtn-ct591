@@ -60,6 +60,7 @@ export default function NoiDungBaiHocList() {
                     API_BASE_URL + `/noidungbaihoc?search=${filterName}`,
                 );
                 setDatas(res.data);
+                console.log(res.data);
             } catch (e) {
                 console.log(e);
             }
@@ -196,7 +197,7 @@ export default function NoiDungBaiHocList() {
                                                             {ndbh_id}
                                                         </Typography>
                                                     </TableCell>
-                                                    <TableCell align="center">{ndbh_tieude}</TableCell>
+                                                    <TableCell align="left">{ndbh_tieude}</TableCell>
                                                     <TableCell align="left">{bh_ten}</TableCell>
                                                     <TableCell align="right">
                                                         <NoiDungBaiHocMoreMenu id={bh_id} noidungbaihocDetail={_datas}/>

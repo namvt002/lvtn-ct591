@@ -34,7 +34,8 @@ export const PATH_PAGE = {
     profile: '/profile',
     product: '/product',
     shopcart: '/shopcart',
-    productDetail: '/product-detail'
+    productDetail: '/product-detail',
+    khoahoc: '/khoahoc'
 };
 
 export const PATH_DASHBOARD = {

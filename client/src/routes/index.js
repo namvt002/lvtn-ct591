@@ -223,6 +223,10 @@ export default function Router() {
             }, {
                 path: 'profile',
                 element: isLogined ? <Profile/> : <Navigate to='/'/>
+            },
+            {
+                path: 'khoahoc',
+                element: <KhoaHocHome/>
             }, {
                 path: 'product',
                 element: <ProductList/>
@@ -272,6 +276,7 @@ const RoleCreate = Loadable(
 
 
 
+const KhoaHocHome = Loadable(lazy(() => import('../pages/homepages/KhoaHoc')));
 //--------------------------Danh Muc-------------------------------------------
 const DanhMucList = Loadable(lazy(() => import('../pages/dashboard/DanhMuc')));
 //--------------------------BaiHoc-------------------------------------------

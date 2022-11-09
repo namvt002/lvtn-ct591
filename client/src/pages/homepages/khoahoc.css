@@ -1,0 +1,115 @@
+.wrapper_course {
+    display: flex;
+    min-height: 100vh;
+}
+.nav {
+    padding: 0 20px 0 20px;
+    width: 100%;
+}
+.nav .title {
+    margin-bottom: 48px;
+    text-align: baseline;
+}
+.nav .title .title_course {
+    color: #242424;
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+.nav .title .content {
+    color: #292929;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+.nav .container_course {
+    overflow: hidden;
+}
+.nav .container_course .course_basic {
+    top: -16px;
+    margin-bottom: 8px;
+}
+.nav .container_course .course_basic .course_basic_title {
+    display: flex;
+}
+.nav .container_course .course_basic .course_basic_title .course_basic_title_content {
+    color: #242424;
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-right: auto;
+    margin-top: 16px;
+}
+.nav .container_course .course_basic .course_body {
+    min-height: 200px;
+    padding-bottom: 0;
+}
+.nav .container_course .course_basic .course_body .modal_row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col {
+    width: 23%;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col .course_body_items {
+    flex-shrink: 0;
+    margin-bottom: 32px;
+    overflow: unset;
+    position: relative;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col .course_body_items a {
+    text-decoration: none;
+    color: #292929;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col .course_body_items a:hover {
+    cursor: pointer;
+    color: #000;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col .course_body_items .course_item_img {
+    background-color: rgba(0, 0, 0, .1);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 16px;
+    display: block;
+    object-fit: cover;
+    overflow: hidden;
+    padding-top: 56.25%;
+    position: relative;
+    width: 100%;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col .course_body_items .course_item_img:hover {
+    opacity: 0.8;
+}
+.nav .container_course .course_basic .course_body .modal_row .modal_col .course_body_items .title_items {
+    text-align: center;
+}
+@media (min-width: 1113px) {
+    .modal_row {
+        margin-left: -12px;
+        margin-right: -12px;
+   }
+}
+@media (min-width: 740px) {
+    .modal_row {
+        margin-left: -8px;
+        margin-right: -8px;
+   }
+}
+@media (min-width: 1113px) {
+    .modal_col {
+        display: block;
+        padding-left: 12px;
+        padding-right: 12px;
+   }
+}
+@media (min-width: 1024px) {
+    html ::-webkit-scrollbar {
+        border-radius: 0;
+        height: 8px;
+        width: 8px;
+   }
+}
+@media (min-width: 1024px) {
+    html ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, .15);
+        border-radius: 4px;
+   }
+}

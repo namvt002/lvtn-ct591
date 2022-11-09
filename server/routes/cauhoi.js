@@ -67,21 +67,18 @@ module.exports = function (app) {
     app.put("/cauhoi", async (req, res) => {
         let _data = req.body;
         const qr_cauhoi = "DELETE FROM cau_hoi WHERE cau_hoi.ch_idbkt = ? ";
-        await db.query(qr_cauhoi, _data.ch_idbkt);
         const qr_cauhoi_insert = "INSERT INTO cau_hoi(ch_noidung, ch_dapan, ch_dapandung, ch_idbkt) VALUES ? ";
         let _dapAnArr = [];
-        _data.cauhoi.map((data)=>_dapAnArr.push([
+        await _data.cauhoi.map((data)=>_dapAnArr.push([
             data.cauhoi,
             data.dapan,
-            data.correct,
+            !!data.correct ? true : false,
           _data.ch_idbkt
-        ]))
-        await db.query(qr_cauhoi_insert, [_dapAnArr], async (err, _rs_ch) => {
-            if (err) {
-                console.log(err);
-            }
-            return res.status(200).send("Thêm thành công");
-        });
+        ]));
+        await query(db, qr_cauhoi, _data.ch_idbkt);
+        await query(db, qr_cauhoi_insert, [_dapAnArr]);
+        return res.status(200).send("Thêm thành công");
+
     });
 
 
@@ -110,28 +107,4 @@ module.exports = function (app) {
             return res.status(201).send("Xóa thành công!");
         }
     });
-
-    app.put('/phieunhap/:id', async (req, res) => {
-        const {id} = req.params;
-        let _sanpham = req.body.sanpham;
-        let _cauhoi = req.body;
-        delete _cauhoi.sanpham;
-
-        const qr_pn = "UPDATE phieu_nhap SET ? WHERE pn_id = ?";
-        await query(db, qr_pn, [_cauhoi, id]);
-
-        const qr_dpn = "DELETE FROM chi_tiet_phieu_nhap WHERE ctpn_idpn = ?";
-        await query(db, qr_dpn, id);
-
-        let _spArr = [];
-        _sanpham.map((e) =>
-            _spArr.push([e.ctpn_idsp, e.ctpn_soluong, e.ctpn_gia, id])
-        );
-
-
-        const qr_ctpn = "INSERT INTO chi_tiet_phieu_nhap(ctpn_idsp, ctpn_soluong, ctpn_gia, ctpn_idpn) VALUES ?";
-        await query(db, qr_ctpn, [_spArr]);
-
-        return res.status(200).send("Cập nhật thành công!")
-    })
 };

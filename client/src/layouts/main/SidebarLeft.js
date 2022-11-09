@@ -25,7 +25,7 @@ export default function SidebarLeft() {
         <ul className="sidebar_list">
           <li>
             <Link
-              to={PATH_PAGE.profile}
+              to=""
               className="sidebar_items"
             >
               <HomeRepairServiceOutlined />
@@ -34,7 +34,7 @@ export default function SidebarLeft() {
           </li>
           <li>
             <Link
-              to={PATH_PAGE.profile}
+              to={PATH_PAGE.khoahoc}
               className="sidebar_items"
             >
               <LibraryAdd />

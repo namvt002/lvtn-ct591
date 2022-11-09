@@ -73,7 +73,7 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
         ndbh_idbh: Yup.object().required('Vui lòng chọn bài học'),
         ndbh_tieude: Yup.string().required('Vui lòng nhập tiêu đề bài học'),
         ndbh_mota: Yup.string().required('Vui lòng nhập mô tả'),
-        ndbh_code: Yup.string().required('Vui lòng code mẫu'),
+        ndbh_code: Yup.string(),
     });
 
     const formik = useFormik({
@@ -160,6 +160,7 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                                 setFieldValue('ndbh_idbh', newValue || '');
                                             }}
                                             options={baihoc?.map((option) => ({
+                                                kh_ten: option.kh_ten,
                                                 bh_id: option.bh_id,
                                                 bh_ten: option.bh_ten,
                                             }))}
@@ -171,7 +172,7 @@ export default function NoiDungBaiHocNewForm({isEdit, current, id, user}) {
                                                     helperText={touched.ndbh_idbh && errors.ndbh_idbh}
                                                 />
                                             )}
-                                            getOptionLabel={(option) => option.bh_ten || ''}
+                                            getOptionLabel={(option) => option.kh_ten ? `${option.kh_ten}-${option.bh_ten}` : ''}
                                         />
                                     </Grid>
                                 </Grid>
