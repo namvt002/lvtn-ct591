@@ -1,7 +1,7 @@
 # Chuẩn bị cở sở dữ liệu
 
 * Tạo cơ sở dữ liệu: ```ct591```
-* Import file ```ct593``` trong thư mục ```server/script ```
+* Import file ```ct591``` trong thư mục ```server/script ```
 
 # Cài đặt thư viện
 
